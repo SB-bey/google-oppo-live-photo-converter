@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 圆角蓝紫渐变底 -->
+    <path
+        android:pathData="M54,0 A54,54 0 0,1 108,54 A54,54 0 0,1 54,108 A54,54 0 0,1 0,54 A54,54 0 0,1 54,0 Z"
+        android:fillColor="#4F6EF7" />
+
+    <!-- 太阳/高光 -->
+    <path
+        android:pathData="M54,30 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0"
+        android:fillColor="#FFD34D" />
+
+    <!-- 山峰剪影 -->
+    <path
+        android:pathData="M18,84 L38,52 L52,70 L62,58 L90,84 Z"
+        android:fillColor="#FFFFFF" />
+
+    <!-- 播放三角 -->
+    <path
+        android:pathData="M60,38 L76,50 L60,62 Z"
+        android:fillColor="#FFFFFF" />
+</vector>

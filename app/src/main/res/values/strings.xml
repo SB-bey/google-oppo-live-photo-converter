@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">实况转换器</string>
+    <string name="app_subtitle">Google 动态图片 ↔ OPPO Live2 实况图片 · 双向转换</string>
+</resources>
