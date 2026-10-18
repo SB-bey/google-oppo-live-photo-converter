@@ -9,28 +9,36 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Button
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.widget.NestedScrollView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.io.File
 import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var logView: TextView
-    private lateinit var scrollView: ScrollView
-    private lateinit var btnPick: Button
-    private lateinit var btnToOppo: Button
-    private lateinit var btnToGoogle: Button
-    private lateinit var btnShare: Button
-    private lateinit var btnSave: Button
+    private lateinit var scrollView: NestedScrollView
+    private lateinit var progress: LinearProgressIndicator
+    private lateinit var formatChip: Chip
+    private lateinit var fileInfo: TextView
+    private lateinit var fileDetail: TextView
+    private lateinit var btnPick: MaterialButton
+    private lateinit var btnToOppo: MaterialButton
+    private lateinit var btnToGoogle: MaterialButton
+    private lateinit var btnShare: MaterialButton
+    private lateinit var btnSave: MaterialButton
 
     private var loadedName: String = ""
     private var loadedBytes: ByteArray? = null
     private var lastOutput: File? = null
+    private var busy = false
 
     private val pickRequest = 1001
 
@@ -40,18 +48,20 @@ class MainActivity : AppCompatActivity() {
 
         logView = findViewById(R.id.logView)
         scrollView = findViewById(R.id.scrollView)
+        progress = findViewById(R.id.progress)
+        formatChip = findViewById(R.id.formatChip)
+        fileInfo = findViewById(R.id.fileInfo)
+        fileDetail = findViewById(R.id.fileDetail)
         btnPick = findViewById(R.id.btnPick)
         btnToOppo = findViewById(R.id.btnToOppo)
         btnToGoogle = findViewById(R.id.btnToGoogle)
         btnShare = findViewById(R.id.btnShare)
         btnSave = findViewById(R.id.btnSave)
 
-        btnToOppo.isEnabled = false
-        btnToGoogle.isEnabled = false
-        btnShare.isEnabled = false
-        btnSave.isEnabled = false
+        setBusy(false)
 
         btnPick.setOnClickListener {
+            if (busy) return@setOnClickListener
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "image/*"
@@ -60,8 +70,12 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, pickRequest)
         }
 
-        btnToOppo.setOnClickListener { convert(toOppo = true) }
-        btnToGoogle.setOnClickListener { convert(toOppo = false) }
+        btnToOppo.setOnClickListener {
+            if (!busy) convert(toOppo = true)
+        }
+        btnToGoogle.setOnClickListener {
+            if (!busy) convert(toOppo = false)
+        }
 
         btnShare.setOnClickListener {
             val f = lastOutput ?: return@setOnClickListener
@@ -76,20 +90,26 @@ class MainActivity : AppCompatActivity() {
 
         btnSave.setOnClickListener {
             val f = lastOutput ?: return@setOnClickListener
+            setBusy(true)
+            appendLog("正在保存到相册…")
             runOnBackground {
                 try {
                     val savedUri = saveToGallery(f)
                     runOnUiThread {
+                        setBusy(false)
                         appendLog("已保存到相册：$savedUri")
                         toast("已保存到相册")
                     }
                 } catch (e: Exception) {
-                    runOnUiThread { appendLog("保存失败：${e.message}") }
+                    runOnUiThread {
+                        setBusy(false)
+                        appendLog("保存失败：${e.message}")
+                    }
                 }
             }
         }
 
-        appendLog("欢迎使用 Google ↔ OPPO 实况图片转换器\n点击「选择动态图片」开始")
+        appendLog("欢迎使用 Google ⇄ OPPO 实况转换器\n点击「选择动态图片」开始")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -97,6 +117,8 @@ class MainActivity : AppCompatActivity() {
         if (requestCode != pickRequest || resultCode != Activity.RESULT_OK) return
         val uri = data?.data ?: return
 
+        setBusy(true)
+        appendLog("正在读取文件…")
         runOnBackground {
             try {
                 val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
@@ -107,54 +129,80 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     loadedName = name
                     loadedBytes = bytes
+                    setBusy(false)
                     analyze(bytes, name)
                 }
             } catch (e: Exception) {
-                runOnUiThread { appendLog("读取失败：${e.message}") }
+                runOnUiThread {
+                    setBusy(false)
+                    appendLog("读取失败：${e.message}")
+                }
             }
         }
     }
 
     private fun analyze(bytes: ByteArray, name: String) {
+        fileInfo.text = name
+        fileDetail.text = formatSize(bytes.size.toLong())
         appendLog("已加载：$name（${formatSize(bytes.size.toLong())}）")
         val result = try {
             MotionPhotoParser(bytes).parse()
         } catch (e: Exception) {
+            fileDetail.text = "解析失败"
             appendLog("解析失败：${e.message}")
             return
         }
 
-        val formatName = when (result.format) {
-            MotionPhotoParser.Format.GOOGLE -> "Google 动态图片（Motion Photo）"
-            MotionPhotoParser.Format.OPPO -> "OPPO 实况图片（Live2）"
-            MotionPhotoParser.Format.GENERIC_MOTION -> "动态图片（通用格式）"
-            MotionPhotoParser.Format.PLAIN_JPEG -> "普通 JPEG（无动态视频）"
-            MotionPhotoParser.Format.UNKNOWN -> "未知格式"
+        when (result.format) {
+            MotionPhotoParser.Format.GOOGLE -> {
+                formatChip.text = "Google 动态图"
+                formatChip.setChipBackgroundColorResource(R.color.md_light_primaryContainer)
+                formatChip.setTextColor(ContextCompat.getColor(this, R.color.md_light_onPrimaryContainer))
+            }
+            MotionPhotoParser.Format.OPPO -> {
+                formatChip.text = "OPPO Live2"
+                formatChip.setChipBackgroundColorResource(R.color.md_light_tertiaryContainer)
+                formatChip.setTextColor(ContextCompat.getColor(this, R.color.md_light_onTertiaryContainer))
+            }
+            MotionPhotoParser.Format.GENERIC_MOTION -> {
+                formatChip.text = "动态图片"
+                formatChip.setChipBackgroundColorResource(R.color.md_light_secondaryContainer)
+                formatChip.setTextColor(ContextCompat.getColor(this, R.color.md_light_onSecondaryContainer))
+            }
+            else -> {
+                formatChip.text = "无动态视频"
+                formatChip.setChipBackgroundColorResource(R.color.md_light_errorContainer)
+                formatChip.setTextColor(ContextCompat.getColor(this, R.color.md_light_onErrorContainer))
+            }
         }
-        appendLog("识别结果：$formatName")
 
         val video = result.videoBytes
         if (video == null || video.isEmpty()) {
+            fileDetail.text = "${formatSize(bytes.size.toLong())} · 未找到内嵌视频"
             appendLog("这张图片里没有找到内嵌动态视频，无法转换。")
             btnToOppo.isEnabled = false
             btnToGoogle.isEnabled = false
             return
         }
 
+        val extra = buildString {
+            append(formatSize(bytes.size.toLong()))
+            append(" · 视频 ")
+            append(formatSize(video.size.toLong()))
+            result.videoCodecHint?.let { append(" · $it") }
+        }
+        fileDetail.text = extra
         appendLog("内嵌视频：${formatSize(video.size.toLong())}")
         result.videoCodecHint?.let { appendLog("视频编码：$it") }
         if (result.videoCodecHint == "HEVC") {
             appendLog("提示：HEVC 视频在部分旧机型相册可能无法播放动画（ColorOS 14+ 正常）")
         }
-
-        btnToOppo.isEnabled = true
-        btnToGoogle.isEnabled = true
     }
 
     private fun convert(toOppo: Boolean) {
         val bytes = loadedBytes ?: return
-        btnToOppo.isEnabled = false
-        btnToGoogle.isEnabled = false
+        setBusy(true)
+        appendLog(if (toOppo) "正在转为 OPPO Live2…" else "正在转为 Google 动态图…")
 
         runOnBackground {
             try {
@@ -178,6 +226,7 @@ class MainActivity : AppCompatActivity() {
                 FileOutputStream(outFile).use { it.write(outBytes) }
 
                 runOnUiThread {
+                    setBusy(false)
                     lastOutput = outFile
                     appendLog(
                         if (toOppo) "转换完成 → OPPO Live2 实况图"
@@ -187,14 +236,11 @@ class MainActivity : AppCompatActivity() {
                     appendLog("大小：${formatSize(outBytes.size.toLong())}")
                     btnShare.isEnabled = true
                     btnSave.isEnabled = true
-                    btnToOppo.isEnabled = true
-                    btnToGoogle.isEnabled = true
                 }
             } catch (e: Exception) {
                 runOnUiThread {
+                    setBusy(false)
                     appendLog("转换失败：${e.message}")
-                    btnToOppo.isEnabled = true
-                    btnToGoogle.isEnabled = true
                 }
             }
         }
@@ -237,6 +283,17 @@ class MainActivity : AppCompatActivity() {
         return "%.2f MB".format(kb / 1024.0)
     }
 
+    private fun setBusy(b: Boolean) {
+        busy = b
+        progress.visibility = if (b) View.VISIBLE else View.GONE
+        btnPick.isEnabled = !b
+        val hasFile = loadedBytes != null && !busy
+        btnToOppo.isEnabled = hasFile
+        btnToGoogle.isEnabled = hasFile
+        btnShare.isEnabled = !b && lastOutput != null
+        btnSave.isEnabled = btnShare.isEnabled
+    }
+
     private fun appendLog(text: String) {
         logView.append(if (logView.text.isEmpty()) text else "\n$text")
         scrollView.post { scrollView.fullScroll(View.FOCUS_DOWN) }
@@ -247,8 +304,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun runOnBackground(block: () -> Unit) {
-        Thread { try { block() } catch (e: Throwable) {
-            runOnUiThread { appendLog("出错了：${e.message}") }
-        } }.start()
+        Thread {
+            try {
+                block()
+            } catch (e: Throwable) {
+                runOnUiThread {
+                    setBusy(false)
+                    appendLog("出错了：${e.message}")
+                }
+            }
+        }.start()
     }
 }

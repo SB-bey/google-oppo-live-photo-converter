@@ -8,8 +8,9 @@
 
 ## 功能
 
+- **Material Design 3 现代界面**：圆角卡片布局、Android 12+ 动态取色（Material You）、自动明暗模式
 - **一键选择动态图片**（系统文件选择器，图片无需离开手机）
-- **自动识别格式**：Google Motion Photo / OPPO Live2 / 普通 JPEG
+- **自动识别格式**：Google Motion Photo / OPPO Live2 / 普通 JPEG，格式标签实时显示
 - **Google → OPPO Live2**：重封装为 OPPO 相册可识别的实况图（`.live.jpg`）
 - **OPPO Live2 → Google**：重封装为带 `MicroVideoOffset` 的 Google 动态图片
 - 内嵌视频 H.264 / HEVC 均可透传，HEVC 会在界面提示兼容性

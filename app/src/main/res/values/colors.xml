@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material 3 色板（基于蓝色 seed，Android 12+ 自动启用动态取色） -->
+
+    <!-- Light -->
+    <color name="md_light_primary">#4F6EF7</color>
+    <color name="md_light_onPrimary">#FFFFFF</color>
+    <color name="md_light_primaryContainer">#DBE1FF</color>
+    <color name="md_light_onPrimaryContainer">#001859</color>
+    <color name="md_light_secondary">#575E71</color>
+    <color name="md_light_onSecondary">#FFFFFF</color>
+    <color name="md_light_secondaryContainer">#DBE2F9</color>
+    <color name="md_light_onSecondaryContainer">#141B2C</color>
+    <color name="md_light_tertiary">#715573</color>
+    <color name="md_light_onTertiary">#FFFFFF</color>
+    <color name="md_light_tertiaryContainer">#FAD8FD</color>
+    <color name="md_light_onTertiaryContainer">#29122D</color>
+    <color name="md_light_error">#BA1A1A</color>
+    <color name="md_light_onError">#FFFFFF</color>
+    <color name="md_light_errorContainer">#FFDAD6</color>
+    <color name="md_light_onErrorContainer">#410002</color>
+    <color name="md_light_background">#F9F9FF</color>
+    <color name="md_light_onBackground">#1A1B20</color>
+    <color name="md_light_surface">#F9F9FF</color>
+    <color name="md_light_onSurface">#1A1B20</color>
+    <color name="md_light_surfaceVariant">#E1E2EC</color>
+    <color name="md_light_onSurfaceVariant">#44474F</color>
+    <color name="md_light_outline">#74777F</color>
+    <color name="md_light_outlineVariant">#C4C6D0</color>
+
+    <!-- Dark -->
+    <color name="md_dark_primary">#B0C4FF</color>
+    <color name="md_dark_onPrimary">#00296B</color>
+    <color name="md_dark_primaryContainer">#2E48A5</color>
+    <color name="md_dark_onPrimaryContainer">#DBE1FF</color>
+    <color name="md_dark_secondary">#BFC6DC</color>
+    <color name="md_dark_onSecondary">#293040</color>
+    <color name="md_dark_secondaryContainer">#3F4759</color>
+    <color name="md_dark_onSecondaryContainer">#DBE2F9</color>
+    <color name="md_dark_tertiary">#DBBCDF</color>
+    <color name="md_dark_onTertiary">#3E2742</color>
+    <color name="md_dark_tertiaryContainer">#563D5A</color>
+    <color name="md_dark_onTertiaryContainer">#FAD8FD</color>
+    <color name="md_dark_error">#FFB4AB</color>
+    <color name="md_dark_onError">#690005</color>
+    <color name="md_dark_errorContainer">#93000A</color>
+    <color name="md_dark_onErrorContainer">#FFDAD6</color>
+    <color name="md_dark_background">#121318</color>
+    <color name="md_dark_onBackground">#E3E1E9</color>
+    <color name="md_dark_surface">#121318</color>
+    <color name="md_dark_onSurface">#E3E1E9</color>
+    <color name="md_dark_surfaceVariant">#44474F</color>
+    <color name="md_dark_onSurfaceVariant">#C4C6D0</color>
+    <color name="md_dark_outline">#8E9099</color>
+    <color name="md_dark_outlineVariant">#44474F</color>
+</resources>
