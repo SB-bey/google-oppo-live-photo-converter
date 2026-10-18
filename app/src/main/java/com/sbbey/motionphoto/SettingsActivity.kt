@@ -3,6 +3,8 @@ package com.sbbey.motionphoto
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -11,6 +13,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.textfield.TextInputEditText
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -79,13 +82,35 @@ class SettingsActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btnBack).setOnClickListener { finish() }
 
+        // Google 相册凭据（实时保存）
+        val inputClientId = findViewById<TextInputEditText>(R.id.inputClientId)
+        val inputClientSecret = findViewById<TextInputEditText>(R.id.inputClientSecret)
+        val inputApiKey = findViewById<TextInputEditText>(R.id.inputApiKey)
+        inputClientId.setText(prefs.getString(GooglePhotosActivity.KEY_CLIENT_ID, ""))
+        inputClientSecret.setText(prefs.getString(GooglePhotosActivity.KEY_CLIENT_SECRET, ""))
+        inputApiKey.setText(prefs.getString(GooglePhotosActivity.KEY_API_KEY, ""))
+        fun save(edit: TextInputEditText, key: String) {
+            edit.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+                override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    prefs.edit().putString(key, s?.toString() ?: "").apply()
+                    changed = true
+                }
+            })
+        }
+        save(inputClientId, GooglePhotosActivity.KEY_CLIENT_ID)
+        save(inputClientSecret, GooglePhotosActivity.KEY_CLIENT_SECRET)
+        save(inputApiKey, GooglePhotosActivity.KEY_API_KEY)
+
         applyLiquidGlass(switchLiquidGlass.isChecked)
     }
 
     private fun applyLiquidGlass(enabled: Boolean) {
         val cards = listOf(
             findViewById<MaterialCardView>(R.id.cardAppearance),
-            findViewById<MaterialCardView>(R.id.cardBehavior)
+            findViewById<MaterialCardView>(R.id.cardBehavior),
+            findViewById<MaterialCardView>(R.id.cardGoogle)
         )
         if (enabled) {
             val dark = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==

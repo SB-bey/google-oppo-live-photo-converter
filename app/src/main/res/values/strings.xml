@@ -20,4 +20,12 @@
     <string name="settings_auto_save_desc">转换成功自动写入相册（Pictures/LivePhotos）</string>
     <string name="settings_hevc_hint">HEVC 兼容性提示</string>
     <string name="settings_hevc_hint_desc">内嵌视频为 HEVC 时显示兼容性提醒</string>
+
+    <!-- Google 相册接入 -->
+    <string name="settings_google_title">Google 相册（云端）导入</string>
+    <string name="settings_google_desc">用 Google Photos Picker API 从云端 Google 相册选素材（免费，需自行创建 Google Cloud 凭据）</string>
+    <string name="settings_google_client_id">OAuth 客户端 ID（必填）</string>
+    <string name="settings_google_client_secret">客户端密钥（可选，PKCE 模式可不填）</string>
+    <string name="settings_google_api_key">API Key（可选）</string>
+    <string name="settings_google_guide">配置步骤：\n1. 打开 console.cloud.google.com，新建项目\n2. 「APIs &amp; Services → Library」搜索并启用 Google Photos Picker API\n3. 「APIs &amp; Services → OAuth consent screen」填应用名，把你的 Google 账号加为测试用户\n4. 「Credentials → Create credentials → OAuth client ID」，类型选「Web application」，Authorized redirect URIs 填：\nsbbeylivephoto://oauth2callback\n5. 把 Client ID 复制到上方输入框（若换 token 报错，再把 Client secret 填上）\n6. 回主页点「从 Google 相册导入」即可</string>
 </resources>

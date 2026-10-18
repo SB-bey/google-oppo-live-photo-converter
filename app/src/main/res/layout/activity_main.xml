@@ -142,6 +142,19 @@
                         app:iconPadding="12dp"
                         style="@style/Widget.Material3.Button.TonalButton" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGoogle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:minHeight="48dp"
+                        android:text="从 Google 相册导入（云端）"
+                        android:textSize="14sp"
+                        app:icon="@drawable/ic_google"
+                        app:iconGravity="textStart"
+                        app:iconPadding="12dp"
+                        style="@style/Widget.Material3.Button.OutlinedButton" />
+
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progress"
                         android:layout_width="match_parent"

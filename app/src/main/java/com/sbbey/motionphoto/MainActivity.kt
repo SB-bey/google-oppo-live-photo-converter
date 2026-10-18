@@ -13,6 +13,8 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fileInfo: TextView
     private lateinit var fileDetail: TextView
     private lateinit var btnPick: MaterialButton
+    private lateinit var btnGoogle: MaterialButton
     private lateinit var btnToOppo: MaterialButton
     private lateinit var btnToGoogle: MaterialButton
     private lateinit var btnShare: MaterialButton
@@ -56,10 +59,27 @@ class MainActivity : AppCompatActivity() {
     private var lastOutput: File? = null
     private var busy = false
 
-    private val pickRequest = 1001
-    private val photoRequest = 1002
-    private val videoRequest = 1003
     private val settingsRequest = 1004
+    private val gphotosRequest = 1005
+
+    /** Android 13+ 原生 Photo Picker（有 GMS 时自动含 Google 相册云端内容）；低版本自动回退系统文件选择器。 */
+    private val pickMotionLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) loadDynamicPhoto(uri) else appendLog("已取消选择")
+    }
+
+    private val pickPhotoLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) loadPhoto(uri) else appendLog("已取消选择照片")
+    }
+
+    private val pickVideoLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) loadVideo(uri) else appendLog("已取消选择视频")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         applyTheme()
@@ -73,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         fileInfo = findViewById(R.id.fileInfo)
         fileDetail = findViewById(R.id.fileDetail)
         btnPick = findViewById(R.id.btnPick)
+        btnGoogle = findViewById(R.id.btnGoogle)
         btnToOppo = findViewById(R.id.btnToOppo)
         btnToGoogle = findViewById(R.id.btnToGoogle)
         btnShare = findViewById(R.id.btnShare)
@@ -107,31 +128,22 @@ class MainActivity : AppCompatActivity() {
 
         btnPick.setOnClickListener {
             if (busy) return@setOnClickListener
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "image/*"
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/jpg"))
-            }
-            startActivityForResult(intent, pickRequest)
+            pickMotionLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        btnGoogle.setOnClickListener {
+            if (busy) return@setOnClickListener
+            startActivityForResult(Intent(this, GooglePhotosActivity::class.java), gphotosRequest)
         }
 
         btnPickPhoto.setOnClickListener {
             if (busy) return@setOnClickListener
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "image/*"
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/jpg"))
-            }
-            startActivityForResult(intent, photoRequest)
+            pickPhotoLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
         btnPickVideo.setOnClickListener {
             if (busy) return@setOnClickListener
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "video/mp4"
-            }
-            startActivityForResult(intent, videoRequest)
+            pickVideoLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly))
         }
 
         btnToOppo.setOnClickListener {
@@ -171,6 +183,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         appendLog("欢迎使用实况转换器\n两条路线都能变成 OPPO Live2：\n① 动态图转换（Google → OPPO）\n② 照片+视频合成")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshButtons()
     }
 
     private fun applyTheme() {
@@ -226,64 +243,71 @@ class MainActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) recreate()
             return
         }
-        if (resultCode != Activity.RESULT_OK) return
-        val uri = data?.data ?: return
+        if (resultCode == gphotosRequest) {
+            if (resultCode != Activity.RESULT_OK) return
+            val uriStr = data?.getStringExtra(GooglePhotosActivity.RESULT_EXTRA_URI) ?: return
+            loadDynamicPhoto(Uri.parse(uriStr))
+            return
+        }
+    }
 
-        when (requestCode) {
-            pickRequest -> {
-                setBusy(true)
-                appendLog("正在读取文件…")
-                runOnBackground {
-                    try {
-                        val bytes = readUri(uri)
-                        val name = queryDisplayName(uri) ?: "motion_photo.jpg"
-                        runOnUiThread {
-                            loadedName = name
-                            loadedBytes = bytes
-                            setBusy(false)
-                            analyze(bytes, name)
-                        }
-                    } catch (e: Exception) {
-                        runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
-                    }
+    /** Photo Picker / Google 相册返回的素材（图片/动态图）。 */
+    private fun loadDynamicPhoto(uri: Uri) {
+        setBusy(true)
+        appendLog("正在读取文件…")
+        runOnBackground {
+            try {
+                val bytes = readUri(uri)
+                val name = queryDisplayName(uri) ?: "motion_photo.jpg"
+                runOnUiThread {
+                    loadedName = name
+                    loadedBytes = bytes
+                    setBusy(false)
+                    analyze(bytes, name)
                 }
+            } catch (e: Exception) {
+                runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
             }
-            photoRequest -> {
-                setBusy(true)
-                runOnBackground {
-                    try {
-                        val bytes = readUri(uri)
-                        val name = queryDisplayName(uri) ?: "photo.jpg"
-                        runOnUiThread {
-                            photoName = name
-                            photoBytes = bytes
-                            setBusy(false)
-                            photoInfo.text = "$name · ${formatSize(bytes.size.toLong())}"
-                            appendLog("照片封面：$name（${formatSize(bytes.size.toLong())}）")
-                        }
-                    } catch (e: Exception) {
-                        runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
-                    }
+        }
+    }
+
+    /** 合成模式：选择封面照片。 */
+    private fun loadPhoto(uri: Uri) {
+        setBusy(true)
+        runOnBackground {
+            try {
+                val bytes = readUri(uri)
+                val name = queryDisplayName(uri) ?: "photo.jpg"
+                runOnUiThread {
+                    photoName = name
+                    photoBytes = bytes
+                    setBusy(false)
+                    photoInfo.text = "$name · ${formatSize(bytes.size.toLong())}"
+                    appendLog("照片封面：$name（${formatSize(bytes.size.toLong())}）")
                 }
+            } catch (e: Exception) {
+                runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
             }
-            videoRequest -> {
-                setBusy(true)
-                runOnBackground {
-                    try {
-                        val bytes = readUri(uri)
-                        val name = queryDisplayName(uri) ?: "video.mp4"
-                        runOnUiThread {
-                            videoName = name
-                            videoBytes = bytes
-                            setBusy(false)
-                            videoInfo.text = "$name · ${formatSize(bytes.size.toLong())}"
-                            appendLog("视频：$name（${formatSize(bytes.size.toLong())}）")
-                            appendLog("提示：建议 3 秒内 H.264 视频，动画效果最佳")
-                        }
-                    } catch (e: Exception) {
-                        runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
-                    }
+        }
+    }
+
+    /** 合成模式：选择视频。 */
+    private fun loadVideo(uri: Uri) {
+        setBusy(true)
+        runOnBackground {
+            try {
+                val bytes = readUri(uri)
+                val name = queryDisplayName(uri) ?: "video.mp4"
+                runOnUiThread {
+                    videoName = name
+                    videoBytes = bytes
+                    setBusy(false)
+                    videoInfo.text = "$name · ${formatSize(bytes.size.toLong())}"
+                    appendLog("视频：$name（${formatSize(bytes.size.toLong())}）")
+                    appendLog("提示：建议 3 秒内 H.264 视频，动画效果最佳")
                 }
+            } catch (e: Exception) {
+                runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
             }
         }
     }
@@ -491,7 +515,11 @@ class MainActivity : AppCompatActivity() {
     private fun refreshButtons() {
         val mergeMode = toggleMode.checkedButtonId == R.id.btnModeMerge
         val hasFile = loadedBytes != null && !busy
+        val googleConfigured = getSharedPreferences(GooglePhotosActivity.PREFS, Context.MODE_PRIVATE)
+            .getString(GooglePhotosActivity.KEY_CLIENT_ID, "").orEmpty().isNotBlank()
         btnPick.isEnabled = !busy
+        btnGoogle.isEnabled = !busy && googleConfigured
+        btnGoogle.visibility = if (googleConfigured) View.VISIBLE else View.GONE
         btnPickPhoto.isEnabled = !busy
         btnPickVideo.isEnabled = !busy
         if (mergeMode) {

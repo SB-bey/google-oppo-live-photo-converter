@@ -12,12 +12,30 @@
 - **双输入模式**（主页切换）：
   - **动态图转换**：Google Motion Photo → OPPO Live2（.live.jpg），也支持反向转 Google
   - **照片 + 视频合成**（原仓库核心功能）：选一张封面照片 + 一段视频 → 合成 OPPO Live2 实况图
+- **三种素材导入方式**：
+  - **系统相册选择器（Photo Picker）**：Android 13+ 原生，有 GMS 设备自动聚合本地相册 + Google Photos 云端内容，零配置
+  - **Google 相册云端导入**：通过官方 Google Photos Picker API 直接从云端相册选素材（需自行配置凭据，见下方说明）
+  - 系统文件选择器（低版本自动回退）
 - **设置页**（主页右上角齿轮）：
   - **液态玻璃效果**：半透明磨砂玻璃质感卡片
   - **主题颜色**：跟随系统动态取色 / 蓝 / 紫 / 绿 / 粉
   - **转换后自动保存到相册**（Pictures/LivePhotos）
   - **HEVC 兼容性提示**开关
+  - **Google 相册凭据配置**（OAuth Client ID / Secret / API Key）
 - 内嵌视频 H.264 / HEVC 均可透传，转换结果可**分享**或**保存到相册**
+
+### Google 相册（云端）导入配置
+
+云端导入使用官方 [Google Photos Picker API](https://developers.google.com/photos/picker/guides/get-started)，走 OAuth 2.0 PKCE 公共客户端流程，凭据只存在本机，不上传任何服务器：
+
+1. 打开 [console.cloud.google.com](https://console.cloud.google.com)，新建项目
+2. 「APIs & Services → Library」搜索并启用 **Google Photos Picker API**
+3. 「APIs & Services → OAuth consent screen」填应用名，把自己的 Google 账号加为测试用户
+4. 「Credentials → Create credentials → OAuth client ID」，类型选 **Web application**，Authorized redirect URIs 填：`sbbeylivephoto://oauth2callback`
+5. 在 App 的「设置 → Google 相册接入」填入 Client ID（如换 token 报错再把 Client secret 填上）
+6. 回主页点「从 Google 相册导入」→ 浏览器登录授权 → 在 Google 相册选照片 → 自动回传
+
+> 说明：Picker API 为官方推荐、无需后端服务器；App 会下载所选素材的原图（含 EXIF）到本机缓存后进入转换流程。
 
 ## 工作原理
 
