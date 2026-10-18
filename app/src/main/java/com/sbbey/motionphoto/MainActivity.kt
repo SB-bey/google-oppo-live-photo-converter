@@ -2,7 +2,9 @@ package com.sbbey.motionphoto
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.NestedScrollView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.io.File
@@ -34,15 +38,31 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnToGoogle: MaterialButton
     private lateinit var btnShare: MaterialButton
     private lateinit var btnSave: MaterialButton
+    private lateinit var toggleMode: MaterialButtonToggleGroup
+    private lateinit var convertSection: View
+    private lateinit var mergeSection: View
+    private lateinit var btnMerge: MaterialButton
+    private lateinit var btnPickPhoto: MaterialButton
+    private lateinit var btnPickVideo: MaterialButton
+    private lateinit var photoInfo: TextView
+    private lateinit var videoInfo: TextView
 
     private var loadedName: String = ""
     private var loadedBytes: ByteArray? = null
+    private var photoName: String = ""
+    private var photoBytes: ByteArray? = null
+    private var videoName: String = ""
+    private var videoBytes: ByteArray? = null
     private var lastOutput: File? = null
     private var busy = false
 
     private val pickRequest = 1001
+    private val photoRequest = 1002
+    private val videoRequest = 1003
+    private val settingsRequest = 1004
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        applyTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -57,6 +77,31 @@ class MainActivity : AppCompatActivity() {
         btnToGoogle = findViewById(R.id.btnToGoogle)
         btnShare = findViewById(R.id.btnShare)
         btnSave = findViewById(R.id.btnSave)
+        toggleMode = findViewById(R.id.toggleMode)
+        convertSection = findViewById(R.id.convertSection)
+        mergeSection = findViewById(R.id.mergeSection)
+        btnMerge = findViewById(R.id.btnMerge)
+        btnPickPhoto = findViewById(R.id.btnPickPhoto)
+        btnPickVideo = findViewById(R.id.btnPickVideo)
+        photoInfo = findViewById(R.id.photoInfo)
+        videoInfo = findViewById(R.id.videoInfo)
+
+        findViewById<MaterialButton>(R.id.btnSettings).setOnClickListener {
+            startActivityForResult(Intent(this, SettingsActivity::class.java), settingsRequest)
+        }
+
+        applyLiquidGlass()
+
+        toggleMode.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            val mergeMode = checkedId == R.id.btnModeMerge
+            convertSection.visibility = if (mergeMode) View.GONE else View.VISIBLE
+            mergeSection.visibility = if (mergeMode) View.VISIBLE else View.GONE
+            btnToOppo.visibility = if (mergeMode) View.GONE else View.VISIBLE
+            btnToGoogle.visibility = if (mergeMode) View.GONE else View.VISIBLE
+            btnMerge.visibility = if (mergeMode) View.VISIBLE else View.GONE
+            refreshButtons()
+        }
 
         setBusy(false)
 
@@ -70,11 +115,33 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, pickRequest)
         }
 
+        btnPickPhoto.setOnClickListener {
+            if (busy) return@setOnClickListener
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/jpg"))
+            }
+            startActivityForResult(intent, photoRequest)
+        }
+
+        btnPickVideo.setOnClickListener {
+            if (busy) return@setOnClickListener
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "video/mp4"
+            }
+            startActivityForResult(intent, videoRequest)
+        }
+
         btnToOppo.setOnClickListener {
             if (!busy) convert(toOppo = true)
         }
         btnToGoogle.setOnClickListener {
             if (!busy) convert(toOppo = false)
+        }
+        btnMerge.setOnClickListener {
+            if (!busy) merge()
         }
 
         btnShare.setOnClickListener {
@@ -90,55 +157,142 @@ class MainActivity : AppCompatActivity() {
 
         btnSave.setOnClickListener {
             val f = lastOutput ?: return@setOnClickListener
-            setBusy(true)
-            appendLog("正在保存到相册…")
             runOnBackground {
                 try {
                     val savedUri = saveToGallery(f)
                     runOnUiThread {
-                        setBusy(false)
                         appendLog("已保存到相册：$savedUri")
                         toast("已保存到相册")
                     }
                 } catch (e: Exception) {
-                    runOnUiThread {
-                        setBusy(false)
-                        appendLog("保存失败：${e.message}")
-                    }
+                    runOnUiThread { appendLog("保存失败：${e.message}") }
                 }
             }
         }
 
-        appendLog("欢迎使用 Google ⇄ OPPO 实况转换器\n点击「选择动态图片」开始")
+        appendLog("欢迎使用实况转换器\n两条路线都能变成 OPPO Live2：\n① 动态图转换（Google → OPPO）\n② 照片+视频合成")
+    }
+
+    private fun applyTheme() {
+        val prefs = getSharedPreferences(SettingsActivity.PREFS, Context.MODE_PRIVATE)
+        val theme = prefs.getString(SettingsActivity.KEY_THEME, "system") ?: "system"
+        val themeId = when (theme) {
+            "blue" -> R.style.AppTheme
+            "purple" -> R.style.AppThemePurple
+            "green" -> R.style.AppThemeGreen
+            "pink" -> R.style.AppThemePink
+            else -> R.style.AppThemeDynamic
+        }
+        setTheme(themeId)
+    }
+
+    private fun liquidGlassEnabled(): Boolean =
+        getSharedPreferences(SettingsActivity.PREFS, Context.MODE_PRIVATE)
+            .getBoolean(SettingsActivity.KEY_LIQUID_GLASS, false)
+
+    private fun autoSaveEnabled(): Boolean =
+        getSharedPreferences(SettingsActivity.PREFS, Context.MODE_PRIVATE)
+            .getBoolean(SettingsActivity.KEY_AUTO_SAVE, false)
+
+    private fun hevcHintEnabled(): Boolean =
+        getSharedPreferences(SettingsActivity.PREFS, Context.MODE_PRIVATE)
+            .getBoolean(SettingsActivity.KEY_HEVC_HINT, true)
+
+    private fun applyLiquidGlass() {
+        if (!liquidGlassEnabled()) return
+        val cards = listOf(
+            findViewById<MaterialCardView>(R.id.cardInput),
+            findViewById<MaterialCardView>(R.id.cardConvert),
+            findViewById<MaterialCardView>(R.id.cardResult)
+        )
+        val dark = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                Configuration.UI_MODE_NIGHT_YES
+        val surface = ContextCompat.getColor(
+            this, if (dark) R.color.liquid_glass_surface_dark else R.color.liquid_glass_surface
+        )
+        val stroke = ContextCompat.getColor(
+            this, if (dark) R.color.liquid_glass_stroke_dark else R.color.liquid_glass_stroke
+        )
+        for (card in cards) {
+            card.setCardBackgroundColor(surface)
+            card.strokeColor = stroke
+            card.strokeWidth = resources.getDimensionPixelSize(R.dimen.liquid_glass_stroke)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != pickRequest || resultCode != Activity.RESULT_OK) return
+        if (requestCode == settingsRequest) {
+            if (resultCode == Activity.RESULT_OK) recreate()
+            return
+        }
+        if (resultCode != Activity.RESULT_OK) return
         val uri = data?.data ?: return
 
-        setBusy(true)
-        appendLog("正在读取文件…")
-        runOnBackground {
-            try {
-                val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
-                    ?: throw IllegalStateException("无法读取文件")
-                if (bytes.size > 128 * 1024 * 1024) throw IllegalStateException("文件超过 128MB，不支持")
-
-                val name = queryDisplayName(uri) ?: "motion_photo.jpg"
-                runOnUiThread {
-                    loadedName = name
-                    loadedBytes = bytes
-                    setBusy(false)
-                    analyze(bytes, name)
+        when (requestCode) {
+            pickRequest -> {
+                setBusy(true)
+                appendLog("正在读取文件…")
+                runOnBackground {
+                    try {
+                        val bytes = readUri(uri)
+                        val name = queryDisplayName(uri) ?: "motion_photo.jpg"
+                        runOnUiThread {
+                            loadedName = name
+                            loadedBytes = bytes
+                            setBusy(false)
+                            analyze(bytes, name)
+                        }
+                    } catch (e: Exception) {
+                        runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
+                    }
                 }
-            } catch (e: Exception) {
-                runOnUiThread {
-                    setBusy(false)
-                    appendLog("读取失败：${e.message}")
+            }
+            photoRequest -> {
+                setBusy(true)
+                runOnBackground {
+                    try {
+                        val bytes = readUri(uri)
+                        val name = queryDisplayName(uri) ?: "photo.jpg"
+                        runOnUiThread {
+                            photoName = name
+                            photoBytes = bytes
+                            setBusy(false)
+                            photoInfo.text = "$name · ${formatSize(bytes.size.toLong())}"
+                            appendLog("照片封面：$name（${formatSize(bytes.size.toLong())}）")
+                        }
+                    } catch (e: Exception) {
+                        runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
+                    }
+                }
+            }
+            videoRequest -> {
+                setBusy(true)
+                runOnBackground {
+                    try {
+                        val bytes = readUri(uri)
+                        val name = queryDisplayName(uri) ?: "video.mp4"
+                        runOnUiThread {
+                            videoName = name
+                            videoBytes = bytes
+                            setBusy(false)
+                            videoInfo.text = "$name · ${formatSize(bytes.size.toLong())}"
+                            appendLog("视频：$name（${formatSize(bytes.size.toLong())}）")
+                            appendLog("提示：建议 3 秒内 H.264 视频，动画效果最佳")
+                        }
+                    } catch (e: Exception) {
+                        runOnUiThread { setBusy(false); appendLog("读取失败：${e.message}") }
+                    }
                 }
             }
         }
+    }
+
+    private fun readUri(uri: Uri): ByteArray {
+        val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
+            ?: throw IllegalStateException("无法读取文件")
+        if (bytes.size > 128 * 1024 * 1024) throw IllegalStateException("文件超过 128MB，不支持")
+        return bytes
     }
 
     private fun analyze(bytes: ByteArray, name: String) {
@@ -180,8 +334,6 @@ class MainActivity : AppCompatActivity() {
         if (video == null || video.isEmpty()) {
             fileDetail.text = "${formatSize(bytes.size.toLong())} · 未找到内嵌视频"
             appendLog("这张图片里没有找到内嵌动态视频，无法转换。")
-            btnToOppo.isEnabled = false
-            btnToGoogle.isEnabled = false
             return
         }
 
@@ -194,7 +346,7 @@ class MainActivity : AppCompatActivity() {
         fileDetail.text = extra
         appendLog("内嵌视频：${formatSize(video.size.toLong())}")
         result.videoCodecHint?.let { appendLog("视频编码：$it") }
-        if (result.videoCodecHint == "HEVC") {
+        if (result.videoCodecHint == "HEVC" && hevcHintEnabled()) {
             appendLog("提示：HEVC 视频在部分旧机型相册可能无法播放动画（ColorOS 14+ 正常）")
         }
     }
@@ -218,12 +370,7 @@ class MainActivity : AppCompatActivity() {
 
                 val base = loadedName.substringBeforeLast('.').ifBlank { "motion_photo" }
                 val suffix = if (toOppo) ".live" else ".google"
-                val fileName = "${base}_converted$suffix.jpg"
-
-                val outDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "LivePhotoConvert")
-                outDir.mkdirs()
-                val outFile = File(outDir, fileName)
-                FileOutputStream(outFile).use { it.write(outBytes) }
+                val outFile = writeOutput(outBytes, "${base}_converted$suffix.jpg")
 
                 runOnUiThread {
                     setBusy(false)
@@ -234,14 +381,66 @@ class MainActivity : AppCompatActivity() {
                     )
                     appendLog("文件：${outFile.absolutePath}")
                     appendLog("大小：${formatSize(outBytes.size.toLong())}")
-                    btnShare.isEnabled = true
-                    btnSave.isEnabled = true
+                    maybeAutoSave(outFile, outBytes)
                 }
             } catch (e: Exception) {
+                runOnUiThread { setBusy(false); appendLog("转换失败：${e.message}") }
+            }
+        }
+    }
+
+    /** 模式 2：照片 + 视频 → OPPO Live2（对应原仓库「原库内容」功能）。 */
+    private fun merge() {
+        val photo = photoBytes ?: run {
+            toast("请先选择照片封面")
+            return
+        }
+        val video = videoBytes ?: run {
+            toast("请先选择视频")
+            return
+        }
+        setBusy(true)
+        appendLog("正在合成 OPPO Live2…")
+
+        runOnBackground {
+            try {
+                val outBytes = MotionPhotoConverter.toOppoLive2(photo, video)
+                val base = photoName.substringBeforeLast('.').ifBlank { "merged" }
+                val outFile = writeOutput(outBytes, "${base}_merged.live.jpg")
+
                 runOnUiThread {
                     setBusy(false)
-                    appendLog("转换失败：${e.message}")
+                    lastOutput = outFile
+                    appendLog("合成完成 → OPPO Live2 实况图（照片+视频）")
+                    appendLog("文件：${outFile.absolutePath}")
+                    appendLog("大小：${formatSize(outBytes.size.toLong())}")
+                    maybeAutoSave(outFile, outBytes)
                 }
+            } catch (e: Exception) {
+                runOnUiThread { setBusy(false); appendLog("合成失败：${e.message}") }
+            }
+        }
+    }
+
+    private fun writeOutput(bytes: ByteArray, fileName: String): File {
+        val outDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "LivePhotoConvert")
+        outDir.mkdirs()
+        val outFile = File(outDir, fileName)
+        FileOutputStream(outFile).use { it.write(bytes) }
+        return outFile
+    }
+
+    /** 设置开启「自动保存到相册」时，转换成功后自动写入相册。 */
+    private fun maybeAutoSave(outFile: File, outBytes: ByteArray) {
+        if (!autoSaveEnabled()) return
+        runOnBackground {
+            try {
+                val uri = saveToGallery(outFile)
+                runOnUiThread {
+                    appendLog("已自动保存到相册：$uri")
+                }
+            } catch (e: Exception) {
+                runOnUiThread { appendLog("自动保存失败：${e.message}") }
             }
         }
     }
@@ -286,11 +485,22 @@ class MainActivity : AppCompatActivity() {
     private fun setBusy(b: Boolean) {
         busy = b
         progress.visibility = if (b) View.VISIBLE else View.GONE
-        btnPick.isEnabled = !b
+        refreshButtons()
+    }
+
+    private fun refreshButtons() {
+        val mergeMode = toggleMode.checkedButtonId == R.id.btnModeMerge
         val hasFile = loadedBytes != null && !busy
-        btnToOppo.isEnabled = hasFile
-        btnToGoogle.isEnabled = hasFile
-        btnShare.isEnabled = !b && lastOutput != null
+        btnPick.isEnabled = !busy
+        btnPickPhoto.isEnabled = !busy
+        btnPickVideo.isEnabled = !busy
+        if (mergeMode) {
+            btnMerge.isEnabled = !busy && photoBytes != null && videoBytes != null
+        } else {
+            btnToOppo.isEnabled = hasFile
+            btnToGoogle.isEnabled = hasFile
+        }
+        btnShare.isEnabled = !busy && lastOutput != null
         btnSave.isEnabled = btnShare.isEnabled
     }
 

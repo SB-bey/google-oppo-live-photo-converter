@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">实况转换器</string>
-    <string name="app_subtitle">Google 动态图片 ↔ OPPO Live2 实况图片 · 双向转换</string>
+    <string name="app_subtitle">照片+视频 / Google 动态图 → OPPO Live2 实况图片</string>
+
+    <!-- 设置页 -->
+    <string name="settings_title">设置</string>
+    <string name="settings_appearance">外观</string>
+    <string name="settings_liquid_glass">液态玻璃效果</string>
+    <string name="settings_liquid_glass_desc">半透明磨砂玻璃质感卡片（Android 12+ 效果最佳）</string>
+    <string name="settings_theme">主题颜色</string>
+    <string name="settings_theme_desc">Android 12+ 可跟随系统壁纸取色</string>
+    <string name="theme_system">跟随系统</string>
+    <string name="theme_blue">蓝色</string>
+    <string name="theme_purple">紫色</string>
+    <string name="theme_green">绿色</string>
+    <string name="theme_pink">粉色</string>
+    <string name="settings_behavior">行为</string>
+    <string name="settings_auto_save">转换后自动保存到相册</string>
+    <string name="settings_auto_save_desc">转换成功自动写入相册（Pictures/LivePhotos）</string>
+    <string name="settings_hevc_hint">HEVC 兼容性提示</string>
+    <string name="settings_hevc_hint_desc">内嵌视频为 HEVC 时显示兼容性提醒</string>
 </resources>

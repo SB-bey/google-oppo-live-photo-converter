@@ -53,4 +53,94 @@
     <color name="md_dark_onSurfaceVariant">#C4C6D0</color>
     <color name="md_dark_outline">#8E9099</color>
     <color name="md_dark_outlineVariant">#44474F</color>
+
+    <!-- 主题色板：紫色（light） -->
+    <color name="md_purple_primary">#7C5CFC</color>
+    <color name="md_purple_onPrimary">#FFFFFF</color>
+    <color name="md_purple_primaryContainer">#E3DEFF</color>
+    <color name="md_purple_onPrimaryContainer">#1B0068</color>
+    <color name="md_purple_secondary">#5B5D71</color>
+    <color name="md_purple_onSecondary">#FFFFFF</color>
+    <color name="md_purple_secondaryContainer">#E0E1F9</color>
+    <color name="md_purple_onSecondaryContainer">#181A2C</color>
+    <color name="md_purple_tertiary">#77536E</color>
+    <color name="md_purple_onTertiary">#FFFFFF</color>
+    <color name="md_purple_tertiaryContainer">#FFD7F2</color>
+    <color name="md_purple_onTertiaryContainer">#2E1129</color>
+
+    <!-- 主题色板：紫色（dark） -->
+    <color name="md_purple_primary_dark">#C6BDFF</color>
+    <color name="md_purple_onPrimary_dark">#2E0096</color>
+    <color name="md_purple_primaryContainer_dark">#5F39E3</color>
+    <color name="md_purple_onPrimaryContainer_dark">#E3DEFF</color>
+    <color name="md_purple_secondary_dark">#C4C5DD</color>
+    <color name="md_purple_onSecondary_dark">#2D2F42</color>
+    <color name="md_purple_secondaryContainer_dark">#434559</color>
+    <color name="md_purple_onSecondaryContainer_dark">#E0E1F9</color>
+    <color name="md_purple_tertiary_dark">#E7BAE0</color>
+    <color name="md_purple_onTertiary_dark">#472840</color>
+    <color name="md_purple_tertiaryContainer_dark">#5F3E57</color>
+    <color name="md_purple_onTertiaryContainer_dark">#FFD7F2</color>
+
+    <!-- 主题色板：绿色（light） -->
+    <color name="md_green_primary">#006A5D</color>
+    <color name="md_green_onPrimary">#FFFFFF</color>
+    <color name="md_green_primaryContainer">#6FF6E1</color>
+    <color name="md_green_onPrimaryContainer">#00201A</color>
+    <color name="md_green_secondary">#4A635E</color>
+    <color name="md_green_onSecondary">#FFFFFF</color>
+    <color name="md_green_secondaryContainer">#CCE8E2</color>
+    <color name="md_green_onSecondaryContainer">#05201B</color>
+    <color name="md_green_tertiary">#466179</color>
+    <color name="md_green_onTertiary">#FFFFFF</color>
+    <color name="md_green_tertiaryContainer">#CCE5FF</color>
+    <color name="md_green_onTertiaryContainer">#001D32</color>
+
+    <!-- 主题色板：绿色（dark） -->
+    <color name="md_green_primary_dark">#50D9C5</color>
+    <color name="md_green_onPrimary_dark">#00372F</color>
+    <color name="md_green_primaryContainer_dark">#005047</color>
+    <color name="md_green_onPrimaryContainer_dark">#6FF6E1</color>
+    <color name="md_green_secondary_dark">#B0CCC6</color>
+    <color name="md_green_onSecondary_dark">#1B3530</color>
+    <color name="md_green_secondaryContainer_dark">#324C47</color>
+    <color name="md_green_onSecondaryContainer_dark">#CCE8E2</color>
+    <color name="md_green_tertiary_dark">#B0C9E3</color>
+    <color name="md_green_onTertiary_dark">#0A3048</color>
+    <color name="md_green_tertiaryContainer_dark">#2D495F</color>
+    <color name="md_green_onTertiaryContainer_dark">#CCE5FF</color>
+
+    <!-- 主题色板：粉色（light） -->
+    <color name="md_pink_primary">#D0317B</color>
+    <color name="md_pink_onPrimary">#FFFFFF</color>
+    <color name="md_pink_primaryContainer">#FFD9E3</color>
+    <color name="md_pink_onPrimaryContainer">#3E001E</color>
+    <color name="md_pink_secondary">#74565F</color>
+    <color name="md_pink_onSecondary">#FFFFFF</color>
+    <color name="md_pink_secondaryContainer">#FFD9E3</color>
+    <color name="md_pink_onSecondaryContainer">#2B151C</color>
+    <color name="md_pink_tertiary">#7C5635</color>
+    <color name="md_pink_onTertiary">#FFFFFF</color>
+    <color name="md_pink_tertiaryContainer">#FFDCC2</color>
+    <color name="md_pink_onTertiaryContainer">#2B1700</color>
+
+    <!-- 主题色板：粉色（dark） -->
+    <color name="md_pink_primary_dark">#FFB0C8</color>
+    <color name="md_pink_onPrimary_dark">#5E1133</color>
+    <color name="md_pink_primaryContainer_dark">#AD1757</color>
+    <color name="md_pink_onPrimaryContainer_dark">#FFD9E3</color>
+    <color name="md_pink_secondary_dark">#E2BDC6</color>
+    <color name="md_pink_onSecondary_dark">#442A32</color>
+    <color name="md_pink_secondaryContainer_dark">#5D4048</color>
+    <color name="md_pink_onSecondaryContainer_dark">#FFD9E3</color>
+    <color name="md_pink_tertiary_dark">#EBBF93</color>
+    <color name="md_pink_onTertiary_dark">#452B0C</color>
+    <color name="md_pink_tertiaryContainer_dark">#61411F</color>
+    <color name="md_pink_onTertiaryContainer_dark">#FFDCC2</color>
+
+    <!-- 液态玻璃 -->
+    <color name="liquid_glass_surface">#CCFFFFFF</color>
+    <color name="liquid_glass_stroke">#66FFFFFF</color>
+    <color name="liquid_glass_surface_dark">#CC121318</color>
+    <color name="liquid_glass_stroke_dark">#59FFFFFF</color>
 </resources>

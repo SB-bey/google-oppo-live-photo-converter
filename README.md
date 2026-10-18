@@ -1,7 +1,7 @@
 # Google ↔ OPPO 实况图片转换器（Android）
 
-把 **Google 标准动态图片（Motion Photo）** 转换成 **OPPO 相册识别的 Live2 实况图片**，
-也支持反向转换（OPPO Live2 → Google 动态图片）。两种动态图片标准在一个 App 里互相转换（mixed up）。
+把 **照片 + 视频** 或 **Google 标准动态图片（Motion Photo）** 都变成 **OPPO 相册识别的 Live2 实况图片**，
+两条输入路线都汇聚到 OPPO Live2，也支持 OPPO Live2 反向转回 Google 动态图片。
 
 格式逆向与字节布局基于 [Young-Spark/oppo-live-photo-maker](https://github.com/Young-Spark/oppo-live-photo-maker)（MIT 协议），
 已在 ColorOS 14+ 真机样本上验证过该字节布局。
@@ -9,12 +9,15 @@
 ## 功能
 
 - **Material Design 3 现代界面**：圆角卡片布局、Android 12+ 动态取色（Material You）、自动明暗模式
-- **一键选择动态图片**（系统文件选择器，图片无需离开手机）
-- **自动识别格式**：Google Motion Photo / OPPO Live2 / 普通 JPEG，格式标签实时显示
-- **Google → OPPO Live2**：重封装为 OPPO 相册可识别的实况图（`.live.jpg`）
-- **OPPO Live2 → Google**：重封装为带 `MicroVideoOffset` 的 Google 动态图片
-- 内嵌视频 H.264 / HEVC 均可透传，HEVC 会在界面提示兼容性
-- 转换结果可**分享**或**保存到相册**（Pictures/LivePhotos）
+- **双输入模式**（主页切换）：
+  - **动态图转换**：Google Motion Photo → OPPO Live2（.live.jpg），也支持反向转 Google
+  - **照片 + 视频合成**（原仓库核心功能）：选一张封面照片 + 一段视频 → 合成 OPPO Live2 实况图
+- **设置页**（主页右上角齿轮）：
+  - **液态玻璃效果**：半透明磨砂玻璃质感卡片
+  - **主题颜色**：跟随系统动态取色 / 蓝 / 紫 / 绿 / 粉
+  - **转换后自动保存到相册**（Pictures/LivePhotos）
+  - **HEVC 兼容性提示**开关
+- 内嵌视频 H.264 / HEVC 均可透传，转换结果可**分享**或**保存到相册**
 
 ## 工作原理
 

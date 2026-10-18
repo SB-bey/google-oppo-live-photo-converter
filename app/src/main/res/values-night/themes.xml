@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- 公共基础：M3 深色主题 + 沉浸式系统栏 -->
+    <style name="AppThemeBase" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+
+    <!-- 蓝色（默认，深色） -->
+    <style name="AppTheme" parent="AppThemeBase">
         <item name="colorPrimary">@color/md_dark_primary</item>
         <item name="colorOnPrimary">@color/md_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_dark_primaryContainer</item>
@@ -20,6 +29,60 @@
         <item name="colorOnSurfaceVariant">@color/md_dark_onSurfaceVariant</item>
         <item name="colorOutline">@color/md_dark_outline</item>
         <item name="colorOutlineVariant">@color/md_dark_outlineVariant</item>
+    </style>
+
+    <!-- 紫色（深色） -->
+    <style name="AppThemePurple" parent="AppThemeBase">
+        <item name="colorPrimary">@color/md_purple_primary_dark</item>
+        <item name="colorOnPrimary">@color/md_purple_onPrimary_dark</item>
+        <item name="colorPrimaryContainer">@color/md_purple_primaryContainer_dark</item>
+        <item name="colorOnPrimaryContainer">@color/md_purple_onPrimaryContainer_dark</item>
+        <item name="colorSecondary">@color/md_purple_secondary_dark</item>
+        <item name="colorOnSecondary">@color/md_purple_onSecondary_dark</item>
+        <item name="colorSecondaryContainer">@color/md_purple_secondaryContainer_dark</item>
+        <item name="colorOnSecondaryContainer">@color/md_purple_onSecondaryContainer_dark</item>
+        <item name="colorTertiary">@color/md_purple_tertiary_dark</item>
+        <item name="colorOnTertiary">@color/md_purple_onTertiary_dark</item>
+        <item name="colorTertiaryContainer">@color/md_purple_tertiaryContainer_dark</item>
+        <item name="colorOnTertiaryContainer">@color/md_purple_onTertiaryContainer_dark</item>
+    </style>
+
+    <!-- 绿色（深色） -->
+    <style name="AppThemeGreen" parent="AppThemeBase">
+        <item name="colorPrimary">@color/md_green_primary_dark</item>
+        <item name="colorOnPrimary">@color/md_green_onPrimary_dark</item>
+        <item name="colorPrimaryContainer">@color/md_green_primaryContainer_dark</item>
+        <item name="colorOnPrimaryContainer">@color/md_green_onPrimaryContainer_dark</item>
+        <item name="colorSecondary">@color/md_green_secondary_dark</item>
+        <item name="colorOnSecondary">@color/md_green_onSecondary_dark</item>
+        <item name="colorSecondaryContainer">@color/md_green_secondaryContainer_dark</item>
+        <item name="colorOnSecondaryContainer">@color/md_green_onSecondaryContainer_dark</item>
+        <item name="colorTertiary">@color/md_green_tertiary_dark</item>
+        <item name="colorOnTertiary">@color/md_green_onTertiary_dark</item>
+        <item name="colorTertiaryContainer">@color/md_green_tertiaryContainer_dark</item>
+        <item name="colorOnTertiaryContainer">@color/md_green_onTertiaryContainer_dark</item>
+    </style>
+
+    <!-- 粉色（深色） -->
+    <style name="AppThemePink" parent="AppThemeBase">
+        <item name="colorPrimary">@color/md_pink_primary_dark</item>
+        <item name="colorOnPrimary">@color/md_pink_onPrimary_dark</item>
+        <item name="colorPrimaryContainer">@color/md_pink_primaryContainer_dark</item>
+        <item name="colorOnPrimaryContainer">@color/md_pink_onPrimaryContainer_dark</item>
+        <item name="colorSecondary">@color/md_pink_secondary_dark</item>
+        <item name="colorOnSecondary">@color/md_pink_onSecondary_dark</item>
+        <item name="colorSecondaryContainer">@color/md_pink_secondaryContainer_dark</item>
+        <item name="colorOnSecondaryContainer">@color/md_pink_onSecondaryContainer_dark</item>
+        <item name="colorTertiary">@color/md_pink_tertiary_dark</item>
+        <item name="colorOnTertiary">@color/md_pink_onTertiary_dark</item>
+        <item name="colorTertiaryContainer">@color/md_pink_tertiaryContainer_dark</item>
+        <item name="colorOnTertiaryContainer">@color/md_pink_onTertiaryContainer_dark</item>
+    </style>
+
+    <!-- 跟随系统动态取色（深色，Android 12+） -->
+    <style name="AppThemeDynamic" parent="Theme.Material3.DynamicColors.DayNight">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
