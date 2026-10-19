@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">实况转换器</string>
-    <string name="app_subtitle">照片+视频 / Google 动态图 → OPPO Live2 实况图片</string>
+    <string name="app_subtitle">iPhone / Google / 三星等所有动态图片 → OPPO Live2 实况图片</string>
 
     <!-- 设置页 -->
     <string name="settings_title">设置</string>
@@ -23,7 +23,7 @@
 
     <!-- Google 相册接入 -->
     <string name="settings_google_title">Google 相册（云端）导入</string>
-    <string name="settings_google_desc">主页「用 Google 相册导入」会直接打开 Google Photos 应用选图（含云端照片），无需任何配置。下方为可选的 Picker API 直连方式</string>
+    <string name="settings_google_desc">主页「导入」会优先直接打开 Google Photos 应用选图（含云端照片），未安装时自动回退系统相册，无需任何配置。下方为可选的 Picker API 直连方式</string>
     <string name="settings_google_client_id">OAuth 客户端 ID（必填）</string>
     <string name="settings_google_client_secret">客户端密钥（可选，PKCE 模式可不填）</string>
     <string name="settings_google_api_key">API Key（可选）</string>

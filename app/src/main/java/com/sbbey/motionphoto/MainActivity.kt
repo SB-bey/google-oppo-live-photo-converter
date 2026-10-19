@@ -5,6 +5,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,6 +26,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
@@ -36,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fileInfo: TextView
     private lateinit var fileDetail: TextView
     private lateinit var btnPick: MaterialButton
-    private lateinit var btnGoogle: MaterialButton
     private lateinit var btnToOppo: MaterialButton
     private lateinit var btnToGoogle: MaterialButton
     private lateinit var btnShare: MaterialButton
@@ -52,6 +54,9 @@ class MainActivity : AppCompatActivity() {
 
     private var loadedName: String = ""
     private var loadedBytes: ByteArray? = null
+    /** iPhone Live Photo 配对视频（主图无内嵌视频时，按同名 .MOV 自动配对）。 */
+    private var pairVideoName: String = ""
+    private var pairVideoBytes: ByteArray? = null
     private var photoName: String = ""
     private var photoBytes: ByteArray? = null
     private var videoName: String = ""
@@ -99,7 +104,6 @@ class MainActivity : AppCompatActivity() {
         fileInfo = findViewById(R.id.fileInfo)
         fileDetail = findViewById(R.id.fileDetail)
         btnPick = findViewById(R.id.btnPick)
-        btnGoogle = findViewById(R.id.btnGoogle)
         btnToOppo = findViewById(R.id.btnToOppo)
         btnToGoogle = findViewById(R.id.btnToGoogle)
         btnShare = findViewById(R.id.btnShare)
@@ -134,12 +138,7 @@ class MainActivity : AppCompatActivity() {
 
         btnPick.setOnClickListener {
             if (busy) return@setOnClickListener
-            pickMotionLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-
-        btnGoogle.setOnClickListener {
-            if (busy) return@setOnClickListener
-            launchGooglePhotosApp()
+            launchImport()
         }
 
         btnPickPhoto.setOnClickListener {
@@ -188,7 +187,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        appendLog("欢迎使用实况转换器\n两条路线都能变成 OPPO Live2：\n① 动态图转换（Google → OPPO）\n② 照片+视频合成")
+        appendLog("欢迎使用实况转换器\n一个导入，支持 iPhone / Google / 三星 / 小米 / 华为等所有动态图片 → OPPO Live2\n另可照片+视频合成实况图")
     }
 
     override fun onResume() {
@@ -264,11 +263,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 直接用 Google Photos 应用选图（能看到云端备份的照片）。
-     * Google Photos 注册了「选择图片」类型的选图 activity，显式指定包名即可直达；
-     * 未安装 Google Photos 时自动回退系统照片选择器。
+     * 统一导入：优先直接打开 Google Photos 应用选图（能看到云端备份的照片），
+     * 未安装时自动回退系统照片选择器（Android 13+ Photo Picker 亦含云端相册）。
      */
-    private fun launchGooglePhotosApp() {
+    private fun launchImport() {
         val intent = Intent(Intent.ACTION_PICK).apply {
             type = "image/*"
             setPackage(GOOGLE_PHOTOS_PACKAGE)
@@ -282,13 +280,15 @@ class MainActivity : AppCompatActivity() {
                 // 启动失败继续回退
             }
         }
-        toast("未找到 Google 相册应用，已改用系统相册")
+        appendLog("正在打开系统相册…")
         pickMotionLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     /** Photo Picker / Google 相册返回的素材（图片/动态图）。 */
     private fun loadDynamicPhoto(uri: Uri) {
         setBusy(true)
+        pairVideoBytes = null
+        pairVideoName = ""
         appendLog("正在读取文件…")
         runOnBackground {
             try {
@@ -372,6 +372,11 @@ class MainActivity : AppCompatActivity() {
                 formatChip.setChipBackgroundColorResource(R.color.md_light_primaryContainer)
                 formatChip.setTextColor(ContextCompat.getColor(this, R.color.md_light_onPrimaryContainer))
             }
+            MotionPhotoParser.Format.SAMSUNG -> {
+                formatChip.text = "三星动态图"
+                formatChip.setChipBackgroundColorResource(R.color.md_light_primaryContainer)
+                formatChip.setTextColor(ContextCompat.getColor(this, R.color.md_light_onPrimaryContainer))
+            }
             MotionPhotoParser.Format.OPPO -> {
                 formatChip.text = "OPPO Live2"
                 formatChip.setChipBackgroundColorResource(R.color.md_light_tertiaryContainer)
@@ -391,6 +396,37 @@ class MainActivity : AppCompatActivity() {
 
         val video = result.videoBytes
         if (video == null || video.isEmpty()) {
+            // 单文件内没有动态视频：尝试按同名配对 iPhone Live Photo 的 .MOV
+            pairVideoBytes = null
+            pairVideoName = ""
+            val base = name.substringBeforeLast('.', name)
+            findPairingVideoUri(base)?.let { movUri ->
+                fileDetail.text = "${formatSize(bytes.size.toLong())} · 检测到 iPhone Live Photo 配对视频"
+                appendLog("检测到 iPhone Live Photo：正在读取配对视频…")
+                runOnBackground {
+                    try {
+                        val movBytes = readUri(movUri)
+                        runOnUiThread {
+                            pairVideoName = queryDisplayName(movUri) ?: "${base}.MOV"
+                            pairVideoBytes = movBytes
+                            formatChip.text = "iPhone Live Photo"
+                            formatChip.setChipBackgroundColorResource(R.color.md_light_primaryContainer)
+                            formatChip.setTextColor(ContextCompat.getColor(this, R.color.md_light_onPrimaryContainer))
+                            fileDetail.text = "iPhone Live Photo · 封面 ${formatSize(bytes.size.toLong())} · 视频 ${formatSize(movBytes.size.toLong())}"
+                            appendLog("配对视频：${pairVideoName}（${formatSize(movBytes.size.toLong())}）")
+                            appendLog("现在可以直接转换 → OPPO Live2")
+                            setBusy(false)
+                        }
+                    } catch (e: Exception) {
+                        runOnUiThread {
+                            setBusy(false)
+                            appendLog("读取配对视频失败：${e.message}")
+                            fileDetail.text = "${formatSize(bytes.size.toLong())} · 未找到内嵌视频"
+                        }
+                    }
+                }
+                return
+            }
             fileDetail.text = "${formatSize(bytes.size.toLong())} · 未找到内嵌视频"
             appendLog("这张图片里没有找到内嵌动态视频，无法转换。")
             return
@@ -410,6 +446,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** 按文件名（忽略扩展名）在系统相册视频里查找同名 .MOV，用于配对 iPhone Live Photo。 */
+    private fun findPairingVideoUri(baseName: String): Uri? {
+        if (baseName.isBlank()) return null
+        val projection = arrayOf(MediaStore.Video.Media._ID, MediaStore.Video.Media.DISPLAY_NAME)
+        contentResolver.query(
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null
+        )?.use { c ->
+            while (c.moveToNext()) {
+                val display = c.getString(1) ?: continue
+                val id = c.getString(0) ?: continue
+                val lower = display.lowercase()
+                if (lower == "${baseName.lowercase()}.mov") {
+                    return Uri.withAppendedPath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
+                }
+            }
+        }
+        return null
+    }
+
     private fun convert(toOppo: Boolean) {
         val bytes = loadedBytes ?: return
         setBusy(true)
@@ -419,12 +474,15 @@ class MainActivity : AppCompatActivity() {
             try {
                 val parsed = MotionPhotoParser(bytes).parse()
                 val video = parsed.videoBytes
-                    ?: throw IllegalStateException("没有内嵌视频")
+                    ?: pairVideoBytes
+                    ?: throw IllegalStateException("没有动态视频")
+
+                val cover = ensureJpegCover(parsed.coverJpeg)
 
                 val outBytes = if (toOppo) {
-                    MotionPhotoConverter.toOppoLive2(parsed.coverJpeg, video)
+                    MotionPhotoConverter.toOppoLive2(cover, video)
                 } else {
-                    MotionPhotoConverter.toGoogleMotionPhoto(parsed.coverJpeg, video)
+                    MotionPhotoConverter.toGoogleMotionPhoto(cover, video)
                 }
 
                 val base = loadedName.substringBeforeLast('.').ifBlank { "motion_photo" }
@@ -463,7 +521,8 @@ class MainActivity : AppCompatActivity() {
 
         runOnBackground {
             try {
-                val outBytes = MotionPhotoConverter.toOppoLive2(photo, video)
+                val cover = ensureJpegCover(photo)
+                val outBytes = MotionPhotoConverter.toOppoLive2(cover, video)
                 val base = photoName.substringBeforeLast('.').ifBlank { "merged" }
                 val outFile = writeOutput(outBytes, "${base}_merged.live.jpg")
 
@@ -541,6 +600,22 @@ class MainActivity : AppCompatActivity() {
         return "%.2f MB".format(kb / 1024.0)
     }
 
+    /**
+     * 封面转 JPEG：已经是 JPEG 直接返回；HEIC 等其它格式用系统解码器转成 JPEG
+     * （iPhone Live Photo 的主图常为 HEIC，OPPO Live2 封面必须是 JPEG）。
+     */
+    private fun ensureJpegCover(cover: ByteArray): ByteArray {
+        if (cover.size >= 2 && cover[0] == 0xFF.toByte() && cover[1] == 0xD8.toByte()) return cover
+        val bmp = BitmapFactory.decodeByteArray(cover, 0, cover.size)
+            ?: throw IllegalStateException("无法解码封面（仅支持 JPEG / HEIC 等系统可解码格式）")
+        val bos = ByteArrayOutputStream()
+        if (!bmp.compress(Bitmap.CompressFormat.JPEG, 92, bos)) {
+            throw IllegalStateException("封面转 JPEG 失败")
+        }
+        appendLog("封面是 HEIC/非 JPEG，已转码为 JPEG")
+        return bos.toByteArray()
+    }
+
     private fun setBusy(b: Boolean) {
         busy = b
         progress.visibility = if (b) View.VISIBLE else View.GONE
@@ -551,8 +626,6 @@ class MainActivity : AppCompatActivity() {
         val mergeMode = toggleMode.checkedButtonId == R.id.btnModeMerge
         val hasFile = loadedBytes != null && !busy
         btnPick.isEnabled = !busy
-        btnGoogle.isEnabled = !busy
-        btnGoogle.visibility = View.VISIBLE
         btnPickPhoto.isEnabled = !busy
         btnPickVideo.isEnabled = !busy
         if (mergeMode) {

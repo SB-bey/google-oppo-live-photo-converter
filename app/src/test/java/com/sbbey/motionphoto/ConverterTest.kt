@@ -132,6 +132,40 @@ class ConverterTest {
         assertTrue(r.videoBytes == null)
     }
 
+    /** 三星 Motion Photo：SamsungCamera:MotionPhotoOffset 尾插式布局。 */
+    @Test
+    fun detectSamsungMotionPhoto() {
+        val jpeg = fakeJpeg()
+        val video = fakeMp4()
+        val xmpPacket = "<?xpacket begin=\"\uFEFF\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n" +
+                "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\">\n" +
+                " <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n" +
+                "  <rdf:Description rdf:about=\"\"\n" +
+                "    xmlns:SamsungCamera=\"http://ns.samsung.com/photos/1.0/camera/\"\n" +
+                "    xmlns:GCamera=\"http://ns.google.com/photos/1.0/camera/\"\n" +
+                "    SamsungCamera:MotionPhoto=\"1\"\n" +
+                "    SamsungCamera:MotionPhotoVersion=\"1\"\n" +
+                "    SamsungCamera:MotionPhotoOffset=\"${video.size}\"\n" +
+                "    GCamera:MotionPhoto=\"1\"/>\n" +
+                " </rdf:RDF>\n" +
+                "</x:xmpmeta>\n" +
+                "<?xpacket end=\"w\"?>"
+        val xmp = XmpUtil.buildXmpApp1(xmpPacket)
+        val ins = JpegUtil.findInsertionPoint(jpeg)
+        val withXmp = JpegUtil.concat(jpeg.copyOfRange(0, ins), xmp, jpeg.copyOfRange(ins, jpeg.size))
+        val bytes = JpegUtil.concat(withXmp, video)
+
+        val r = MotionPhotoParser(bytes).parse()
+        assertEquals(MotionPhotoParser.Format.SAMSUNG, r.format)
+        assertNotNull(r.videoBytes)
+        assertArrayEquals(video, r.videoBytes)
+
+        // 三星样本也应能转换为 OPPO Live2
+        val oppo = MotionPhotoConverter.toOppoLive2(r.coverJpeg, r.videoBytes!!)
+        assertEquals(MotionPhotoParser.Format.OPPO, MotionPhotoParser(oppo).parse().format)
+        assertArrayEquals(video, MotionPhotoParser(oppo).parse().videoBytes)
+    }
+
     /** 端到端：真实 Google 动态图样本（真实 JPEG + H.264 MP4）→ 解析 → 双向转换 → 落盘供外部核验。 */
     @Test
     fun realSampleEndToEnd() {

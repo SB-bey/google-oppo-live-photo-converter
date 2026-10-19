@@ -5,7 +5,7 @@ package com.sbbey.motionphoto
  */
 class MotionPhotoParser(private val fileBytes: ByteArray) {
 
-    enum class Format { GOOGLE, OPPO, GENERIC_MOTION, PLAIN_JPEG, UNKNOWN }
+    enum class Format { GOOGLE, SAMSUNG, OPPO, GENERIC_MOTION, PLAIN_JPEG, UNKNOWN }
 
     data class ParseResult(
         val format: Format,
@@ -36,6 +36,10 @@ class MotionPhotoParser(private val fileBytes: ByteArray) {
             XmpUtil.attr(it, "GCamera:MicroVideo") == "1" ||
                     (XmpUtil.attr(it, "GCamera:MotionPhoto") == "1" && XmpUtil.attr(it, "GCamera:MicroVideoOffset") != null)
         } == true
+        val isSamsung = xmp?.let {
+            XmpUtil.attr(it, "SamsungCamera:MotionPhoto") == "1" ||
+                    XmpUtil.attr(it, "SamsungCamera:MotionPhotoOffset") != null
+        } == true
 
         val n = fileBytes.size
 
@@ -44,6 +48,11 @@ class MotionPhotoParser(private val fileBytes: ByteArray) {
         var videoLen = -1L
         if (xmp != null) {
             XmpUtil.attr(xmp, "GCamera:MicroVideoOffset")?.toLongOrNull()?.let { off ->
+                if (off in 1..n.toLong()) { videoStart = n - off.toInt(); videoLen = off }
+            }
+        }
+        if (videoStart < 0 && xmp != null) {
+            XmpUtil.attr(xmp, "SamsungCamera:MotionPhotoOffset")?.toLongOrNull()?.let { off ->
                 if (off in 1..n.toLong()) { videoStart = n - off.toInt(); videoLen = off }
             }
         }
@@ -93,6 +102,7 @@ class MotionPhotoParser(private val fileBytes: ByteArray) {
         val format = when {
             isOppo -> Format.OPPO
             isGoogle -> Format.GOOGLE
+            isSamsung -> Format.SAMSUNG
             videoStart > 0 -> Format.GENERIC_MOTION
             n >= 2 && fileBytes[0] == 0xFF.toByte() && fileBytes[1] == 0xD8.toByte() -> Format.PLAIN_JPEG
             else -> Format.UNKNOWN
