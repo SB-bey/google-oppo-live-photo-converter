@@ -31,7 +31,8 @@
 ### 3. 设置页（主页右上角齿轮）
 
 - **液态玻璃效果**：半透明磨砂玻璃质感卡片（浅色 / 深色自动适配）
-- **主题颜色**：跟随系统动态取色（Material You）/ 蓝色 / 紫色 / 绿色 / 粉色，即时生效
+- **主题颜色**：跟随系统（iOS 蓝）/ 蓝色 / 紫色 / 绿色 / 粉色，即时生效
+- **iOS 设计语言（Apple HIG）**：iOS 系统色板、大标题导航、分组圆角卡片、分段控件、iOS 绿色开关
 - **转换后自动保存到相册**（Pictures/LivePhotos）
 - **HEVC 兼容性提示**开关
 - **Google 相册凭据配置**（OAuth Client ID / Secret / API Key）
@@ -121,6 +122,7 @@ Google 动态图片（Pixel 系尾插式）= JPEG + 末尾追加 MP4 + XMP：
 | v1.2.0 | 补全逻辑：照片 + 视频 → OPPO Live2 合成模式；新增设置页（液态玻璃 / 主题色 / 自动保存 / HEVC 提示） |
 | v1.3.0 | Google 相册（云端）导入：Google Photos Picker API + OAuth PKCE；本地选择升级系统 Photo Picker |
 | v1.4.0 | 「用 Google 相册导入」：直接拉起 Google Photos 应用选图（含云端照片），零配置；未安装自动回退系统相册 |
+| v1.5.0 | **iOS 设计语言（Apple HIG）**：iOS 色板、大标题导航、分组圆角卡片、分段控件、iOS 绿色开关，深浅色全适配 |
 
 ---
 
