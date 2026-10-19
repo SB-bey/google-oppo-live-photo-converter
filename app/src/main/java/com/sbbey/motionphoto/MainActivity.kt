@@ -61,6 +61,12 @@ class MainActivity : AppCompatActivity() {
 
     private val settingsRequest = 1004
     private val gphotosRequest = 1005
+    private val gphotosAppRequest = 1006
+
+    companion object {
+        /** Google Photos 应用包名。 */
+        const val GOOGLE_PHOTOS_PACKAGE = "com.google.android.apps.photos"
+    }
 
     /** Android 13+ 原生 Photo Picker（有 GMS 时自动含 Google 相册云端内容）；低版本自动回退系统文件选择器。 */
     private val pickMotionLauncher = registerForActivityResult(
@@ -133,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
         btnGoogle.setOnClickListener {
             if (busy) return@setOnClickListener
-            startActivityForResult(Intent(this, GooglePhotosActivity::class.java), gphotosRequest)
+            launchGooglePhotosApp()
         }
 
         btnPickPhoto.setOnClickListener {
@@ -243,12 +249,41 @@ class MainActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) recreate()
             return
         }
-        if (resultCode == gphotosRequest) {
+        if (requestCode == gphotosRequest) {
             if (resultCode != Activity.RESULT_OK) return
             val uriStr = data?.getStringExtra(GooglePhotosActivity.RESULT_EXTRA_URI) ?: return
             loadDynamicPhoto(Uri.parse(uriStr))
             return
         }
+        if (requestCode == gphotosAppRequest) {
+            if (resultCode != Activity.RESULT_OK) return
+            val uri = data?.data ?: return
+            appendLog("已从 Google 相册选择图片")
+            loadDynamicPhoto(uri)
+        }
+    }
+
+    /**
+     * 直接用 Google Photos 应用选图（能看到云端备份的照片）。
+     * Google Photos 注册了「选择图片」类型的选图 activity，显式指定包名即可直达；
+     * 未安装 Google Photos 时自动回退系统照片选择器。
+     */
+    private fun launchGooglePhotosApp() {
+        val intent = Intent(Intent.ACTION_PICK).apply {
+            type = "image/*"
+            setPackage(GOOGLE_PHOTOS_PACKAGE)
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            appendLog("正在打开 Google 相册…（可以选云端照片）")
+            try {
+                startActivityForResult(intent, gphotosAppRequest)
+                return
+            } catch (e: Exception) {
+                // 启动失败继续回退
+            }
+        }
+        toast("未找到 Google 相册应用，已改用系统相册")
+        pickMotionLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     /** Photo Picker / Google 相册返回的素材（图片/动态图）。 */
@@ -515,11 +550,9 @@ class MainActivity : AppCompatActivity() {
     private fun refreshButtons() {
         val mergeMode = toggleMode.checkedButtonId == R.id.btnModeMerge
         val hasFile = loadedBytes != null && !busy
-        val googleConfigured = getSharedPreferences(GooglePhotosActivity.PREFS, Context.MODE_PRIVATE)
-            .getString(GooglePhotosActivity.KEY_CLIENT_ID, "").orEmpty().isNotBlank()
         btnPick.isEnabled = !busy
-        btnGoogle.isEnabled = !busy && googleConfigured
-        btnGoogle.visibility = if (googleConfigured) View.VISIBLE else View.GONE
+        btnGoogle.isEnabled = !busy
+        btnGoogle.visibility = View.VISIBLE
         btnPickPhoto.isEnabled = !busy
         btnPickVideo.isEnabled = !busy
         if (mergeMode) {

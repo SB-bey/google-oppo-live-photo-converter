@@ -148,7 +148,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:minHeight="48dp"
-                        android:text="从 Google 相册导入（云端）"
+                        android:text="用 Google 相册导入（可选云端照片）"
                         android:textSize="14sp"
                         app:icon="@drawable/ic_google"
                         app:iconGravity="textStart"

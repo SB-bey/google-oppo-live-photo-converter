@@ -25,7 +25,7 @@
 ### 2. 三种素材导入方式
 
 - **系统照片选择器（Photo Picker）**：Android 13+ 原生，有 Google 服务的设备自动聚合本地相册 + Google Photos 云端内容，**零配置**
-- **Google 相册（云端）导入**：官方 Google Photos Picker API，直接从云端相册选素材（需一次性配置凭据，见下文）
+- **用 Google 相册导入**：直接打开 Google Photos 应用选图，云端备份的照片也能选，**无需任何配置**；未安装时自动回退系统相册
 - **系统文件选择器**：Android 8~12 自动回退，也支持从云盘等文件服务导入
 
 ### 3. 设置页（主页右上角齿轮）
@@ -44,10 +44,17 @@
 
 ---
 
-## Google 相册（云端）导入配置
+## 用 Google 相册导入
 
-云端导入使用官方 [Google Photos Picker API](https://developers.google.com/photos/picker/guides/get-started)，走 **OAuth 2.0 PKCE 公共客户端**流程。
-凭据只保存在本机，应用没有后端服务器，照片不上传到任何第三方。
+主页「动态图转换」模式下的 **「用 Google 相册导入」** 按钮会直接拉起 Google Photos 应用
+（通过系统 `ACTION_PICK` 指定 Google Photos 包名，Android 11+ 已在 manifest 声明包可见性），
+在 Google Photos 里既能选本地照片，也能选 **云端备份** 的照片。**完全不需要任何配置**。
+如果设备没装 Google Photos，会自动回退到系统照片选择器。
+
+### （可选）Google Photos Picker API 直连
+
+如需不依赖 Google Photos 应用的云端直连方式，可用官方
+[Google Photos Picker API](https://developers.google.com/photos/picker/guides/get-started)（OAuth 2.0 PKCE 公共客户端，凭据只存本机）：
 
 1. 打开 [console.cloud.google.com](https://console.cloud.google.com)，新建项目
 2. 「APIs & Services → Library」搜索并启用 **Google Photos Picker API**
@@ -57,7 +64,6 @@
    sbbeylivephoto://oauth2callback
    ```
 5. 在 App 的「设置 → Google 相册接入」填入 Client ID（如换 token 报错，再把 Client secret 填上）
-6. 回主页点「从 Google 相册导入」→ 浏览器登录授权 → 在 Google 相册里选照片 → 自动下载原图（含 EXIF）回传
 
 > 授权 / 选择 / 下载全程走官方接口；下载的素材缓存到应用私有目录，转换完成后可删除。
 
@@ -114,6 +120,7 @@ Google 动态图片（Pixel 系尾插式）= JPEG + 末尾追加 MP4 + XMP：
 | v1.1.0 | Material Design 3 现代化界面：圆角卡片、动态取色、明暗模式 |
 | v1.2.0 | 补全逻辑：照片 + 视频 → OPPO Live2 合成模式；新增设置页（液态玻璃 / 主题色 / 自动保存 / HEVC 提示） |
 | v1.3.0 | Google 相册（云端）导入：Google Photos Picker API + OAuth PKCE；本地选择升级系统 Photo Picker |
+| v1.4.0 | 「用 Google 相册导入」：直接拉起 Google Photos 应用选图（含云端照片），零配置；未安装自动回退系统相册 |
 
 ---
 
@@ -148,7 +155,7 @@ keytool -genkeypair -v -keystore app/keystore/release.keystore -alias motionphot
 - minSdk 26（Android 8.0+）
 - OPPO 实况识别：ColorOS 14+ 已确认；老固件可能不识别
 - HEVC 视频在部分旧机型相册可能无法播放动画（转换后仍可正常当图片打开）
-- Google 相册云端导入需要能访问 Google 服务（GMS / 网络可达）
+- 「用 Google 相册导入」需要设备安装 Google Photos 应用（未安装会自动回退系统相册）
 
 ---
 
