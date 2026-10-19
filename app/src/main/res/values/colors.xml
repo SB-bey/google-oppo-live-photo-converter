@@ -1,146 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Material 3 色板（基于蓝色 seed，Android 12+ 自动启用动态取色） -->
+    <!-- iOS 设计语言色板（Apple HIG）：systemBlue / systemGray / systemGreen / systemPurple / systemPink -->
 
-    <!-- Light -->
-    <color name="md_light_primary">#4F6EF7</color>
+    <!-- Light（iOS 浅色） -->
+    <color name="md_light_primary">#007AFF</color>
     <color name="md_light_onPrimary">#FFFFFF</color>
-    <color name="md_light_primaryContainer">#DBE1FF</color>
-    <color name="md_light_onPrimaryContainer">#001859</color>
-    <color name="md_light_secondary">#575E71</color>
+    <color name="md_light_primaryContainer">#E5F1FF</color>
+    <color name="md_light_onPrimaryContainer">#00305C</color>
+    <color name="md_light_secondary">#8E8E93</color>
     <color name="md_light_onSecondary">#FFFFFF</color>
-    <color name="md_light_secondaryContainer">#DBE2F9</color>
-    <color name="md_light_onSecondaryContainer">#141B2C</color>
-    <color name="md_light_tertiary">#715573</color>
+    <color name="md_light_secondaryContainer">#F2F2F7</color>
+    <color name="md_light_onSecondaryContainer">#3C3C43</color>
+    <color name="md_light_tertiary">#FF9500</color>
     <color name="md_light_onTertiary">#FFFFFF</color>
-    <color name="md_light_tertiaryContainer">#FAD8FD</color>
-    <color name="md_light_onTertiaryContainer">#29122D</color>
-    <color name="md_light_error">#BA1A1A</color>
+    <color name="md_light_tertiaryContainer">#FFE9D1</color>
+    <color name="md_light_onTertiaryContainer">#4A2C00</color>
+    <color name="md_light_error">#FF3B30</color>
     <color name="md_light_onError">#FFFFFF</color>
-    <color name="md_light_errorContainer">#FFDAD6</color>
-    <color name="md_light_onErrorContainer">#410002</color>
-    <color name="md_light_background">#F9F9FF</color>
-    <color name="md_light_onBackground">#1A1B20</color>
-    <color name="md_light_surface">#F9F9FF</color>
-    <color name="md_light_onSurface">#1A1B20</color>
-    <color name="md_light_surfaceVariant">#E1E2EC</color>
-    <color name="md_light_onSurfaceVariant">#44474F</color>
-    <color name="md_light_outline">#74777F</color>
-    <color name="md_light_outlineVariant">#C4C6D0</color>
+    <color name="md_light_errorContainer">#FFD7D5</color>
+    <color name="md_light_onErrorContainer">#5A0D08</color>
+    <color name="md_light_background">#F2F2F7</color>
+    <color name="md_light_onBackground">#1C1C1E</color>
+    <color name="md_light_surface">#FFFFFF</color>
+    <color name="md_light_onSurface">#1C1C1E</color>
+    <color name="md_light_surfaceVariant">#F2F2F7</color>
+    <color name="md_light_onSurfaceVariant">#3C3C43</color>
+    <color name="md_light_outline">#C6C6C8</color>
+    <color name="md_light_outlineVariant">#E5E5EA</color>
 
-    <!-- Dark -->
-    <color name="md_dark_primary">#B0C4FF</color>
-    <color name="md_dark_onPrimary">#00296B</color>
-    <color name="md_dark_primaryContainer">#2E48A5</color>
-    <color name="md_dark_onPrimaryContainer">#DBE1FF</color>
-    <color name="md_dark_secondary">#BFC6DC</color>
-    <color name="md_dark_onSecondary">#293040</color>
-    <color name="md_dark_secondaryContainer">#3F4759</color>
-    <color name="md_dark_onSecondaryContainer">#DBE2F9</color>
-    <color name="md_dark_tertiary">#DBBCDF</color>
-    <color name="md_dark_onTertiary">#3E2742</color>
-    <color name="md_dark_tertiaryContainer">#563D5A</color>
-    <color name="md_dark_onTertiaryContainer">#FAD8FD</color>
-    <color name="md_dark_error">#FFB4AB</color>
-    <color name="md_dark_onError">#690005</color>
-    <color name="md_dark_errorContainer">#93000A</color>
-    <color name="md_dark_onErrorContainer">#FFDAD6</color>
-    <color name="md_dark_background">#121318</color>
-    <color name="md_dark_onBackground">#E3E1E9</color>
-    <color name="md_dark_surface">#121318</color>
-    <color name="md_dark_onSurface">#E3E1E9</color>
-    <color name="md_dark_surfaceVariant">#44474F</color>
-    <color name="md_dark_onSurfaceVariant">#C4C6D0</color>
-    <color name="md_dark_outline">#8E9099</color>
-    <color name="md_dark_outlineVariant">#44474F</color>
+    <!-- Dark（iOS 深色） -->
+    <color name="md_dark_primary">#0A84FF</color>
+    <color name="md_dark_onPrimary">#FFFFFF</color>
+    <color name="md_dark_primaryContainer">#003A73</color>
+    <color name="md_dark_onPrimaryContainer">#A8D1FF</color>
+    <color name="md_dark_secondary">#98989D</color>
+    <color name="md_dark_onSecondary">#FFFFFF</color>
+    <color name="md_dark_secondaryContainer">#2C2C2E</color>
+    <color name="md_dark_onSecondaryContainer">#D1D1D6</color>
+    <color name="md_dark_tertiary">#FF9F0A</color>
+    <color name="md_dark_onTertiary">#FFFFFF</color>
+    <color name="md_dark_tertiaryContainer">#4A2600</color>
+    <color name="md_dark_onTertiaryContainer">#FFD9B3</color>
+    <color name="md_dark_error">#FF453A</color>
+    <color name="md_dark_onError">#FFFFFF</color>
+    <color name="md_dark_errorContainer">#4C0002</color>
+    <color name="md_dark_onErrorContainer">#FFD7D5</color>
+    <color name="md_dark_background">#000000</color>
+    <color name="md_dark_onBackground">#FFFFFF</color>
+    <color name="md_dark_surface">#1C1C1E</color>
+    <color name="md_dark_onSurface">#FFFFFF</color>
+    <color name="md_dark_surfaceVariant">#2C2C2E</color>
+    <color name="md_dark_onSurfaceVariant">#D1D1D6</color>
+    <color name="md_dark_outline">#48484A</color>
+    <color name="md_dark_outlineVariant">#3A3A3C</color>
 
-    <!-- 主题色板：紫色（light） -->
-    <color name="md_purple_primary">#7C5CFC</color>
+    <!-- 主题色板：紫色 systemPurple（light/dark） -->
+    <color name="md_purple_primary">#AF52DE</color>
     <color name="md_purple_onPrimary">#FFFFFF</color>
-    <color name="md_purple_primaryContainer">#E3DEFF</color>
-    <color name="md_purple_onPrimaryContainer">#1B0068</color>
-    <color name="md_purple_secondary">#5B5D71</color>
+    <color name="md_purple_primaryContainer">#F3E7FF</color>
+    <color name="md_purple_onPrimaryContainer">#3A0A5F</color>
+    <color name="md_purple_secondary">#8E8E93</color>
     <color name="md_purple_onSecondary">#FFFFFF</color>
-    <color name="md_purple_secondaryContainer">#E0E1F9</color>
-    <color name="md_purple_onSecondaryContainer">#181A2C</color>
-    <color name="md_purple_tertiary">#77536E</color>
+    <color name="md_purple_secondaryContainer">#F2F2F7</color>
+    <color name="md_purple_onSecondaryContainer">#3C3C43</color>
+    <color name="md_purple_tertiary">#FF9500</color>
     <color name="md_purple_onTertiary">#FFFFFF</color>
-    <color name="md_purple_tertiaryContainer">#FFD7F2</color>
-    <color name="md_purple_onTertiaryContainer">#2E1129</color>
+    <color name="md_purple_tertiaryContainer">#FFE9D1</color>
+    <color name="md_purple_onTertiaryContainer">#4A2C00</color>
+    <color name="md_purple_primary_dark">#BF5AF2</color>
+    <color name="md_purple_onPrimary_dark">#FFFFFF</color>
+    <color name="md_purple_primaryContainer_dark">#5B2E7E</color>
+    <color name="md_purple_onPrimaryContainer_dark">#F3E7FF</color>
+    <color name="md_purple_secondary_dark">#98989D</color>
+    <color name="md_purple_onSecondary_dark">#FFFFFF</color>
+    <color name="md_purple_secondaryContainer_dark">#2C2C2E</color>
+    <color name="md_purple_onSecondaryContainer_dark">#D1D1D6</color>
+    <color name="md_purple_tertiary_dark">#FF9F0A</color>
+    <color name="md_purple_onTertiary_dark">#FFFFFF</color>
+    <color name="md_purple_tertiaryContainer_dark">#4A2600</color>
+    <color name="md_purple_onTertiaryContainer_dark">#FFD9B3</color>
 
-    <!-- 主题色板：紫色（dark） -->
-    <color name="md_purple_primary_dark">#C6BDFF</color>
-    <color name="md_purple_onPrimary_dark">#2E0096</color>
-    <color name="md_purple_primaryContainer_dark">#5F39E3</color>
-    <color name="md_purple_onPrimaryContainer_dark">#E3DEFF</color>
-    <color name="md_purple_secondary_dark">#C4C5DD</color>
-    <color name="md_purple_onSecondary_dark">#2D2F42</color>
-    <color name="md_purple_secondaryContainer_dark">#434559</color>
-    <color name="md_purple_onSecondaryContainer_dark">#E0E1F9</color>
-    <color name="md_purple_tertiary_dark">#E7BAE0</color>
-    <color name="md_purple_onTertiary_dark">#472840</color>
-    <color name="md_purple_tertiaryContainer_dark">#5F3E57</color>
-    <color name="md_purple_onTertiaryContainer_dark">#FFD7F2</color>
-
-    <!-- 主题色板：绿色（light） -->
-    <color name="md_green_primary">#006A5D</color>
+    <!-- 主题色板：绿色 systemGreen（light/dark） -->
+    <color name="md_green_primary">#34C759</color>
     <color name="md_green_onPrimary">#FFFFFF</color>
-    <color name="md_green_primaryContainer">#6FF6E1</color>
-    <color name="md_green_onPrimaryContainer">#00201A</color>
-    <color name="md_green_secondary">#4A635E</color>
+    <color name="md_green_primaryContainer">#E3F6E8</color>
+    <color name="md_green_onPrimaryContainer">#0A3B1A</color>
+    <color name="md_green_secondary">#8E8E93</color>
     <color name="md_green_onSecondary">#FFFFFF</color>
-    <color name="md_green_secondaryContainer">#CCE8E2</color>
-    <color name="md_green_onSecondaryContainer">#05201B</color>
-    <color name="md_green_tertiary">#466179</color>
+    <color name="md_green_secondaryContainer">#F2F2F7</color>
+    <color name="md_green_onSecondaryContainer">#3C3C43</color>
+    <color name="md_green_tertiary">#FF9500</color>
     <color name="md_green_onTertiary">#FFFFFF</color>
-    <color name="md_green_tertiaryContainer">#CCE5FF</color>
-    <color name="md_green_onTertiaryContainer">#001D32</color>
+    <color name="md_green_tertiaryContainer">#FFE9D1</color>
+    <color name="md_green_onTertiaryContainer">#4A2C00</color>
+    <color name="md_green_primary_dark">#30D158</color>
+    <color name="md_green_onPrimary_dark">#FFFFFF</color>
+    <color name="md_green_primaryContainer_dark">#1E5A2E</color>
+    <color name="md_green_onPrimaryContainer_dark">#E3F6E8</color>
+    <color name="md_green_secondary_dark">#98989D</color>
+    <color name="md_green_onSecondary_dark">#FFFFFF</color>
+    <color name="md_green_secondaryContainer_dark">#2C2C2E</color>
+    <color name="md_green_onSecondaryContainer_dark">#D1D1D6</color>
+    <color name="md_green_tertiary_dark">#FF9F0A</color>
+    <color name="md_green_onTertiary_dark">#FFFFFF</color>
+    <color name="md_green_tertiaryContainer_dark">#4A2600</color>
+    <color name="md_green_onTertiaryContainer_dark">#FFD9B3</color>
 
-    <!-- 主题色板：绿色（dark） -->
-    <color name="md_green_primary_dark">#50D9C5</color>
-    <color name="md_green_onPrimary_dark">#00372F</color>
-    <color name="md_green_primaryContainer_dark">#005047</color>
-    <color name="md_green_onPrimaryContainer_dark">#6FF6E1</color>
-    <color name="md_green_secondary_dark">#B0CCC6</color>
-    <color name="md_green_onSecondary_dark">#1B3530</color>
-    <color name="md_green_secondaryContainer_dark">#324C47</color>
-    <color name="md_green_onSecondaryContainer_dark">#CCE8E2</color>
-    <color name="md_green_tertiary_dark">#B0C9E3</color>
-    <color name="md_green_onTertiary_dark">#0A3048</color>
-    <color name="md_green_tertiaryContainer_dark">#2D495F</color>
-    <color name="md_green_onTertiaryContainer_dark">#CCE5FF</color>
-
-    <!-- 主题色板：粉色（light） -->
-    <color name="md_pink_primary">#D0317B</color>
+    <!-- 主题色板：粉色 systemPink（light/dark） -->
+    <color name="md_pink_primary">#FF2D55</color>
     <color name="md_pink_onPrimary">#FFFFFF</color>
-    <color name="md_pink_primaryContainer">#FFD9E3</color>
-    <color name="md_pink_onPrimaryContainer">#3E001E</color>
-    <color name="md_pink_secondary">#74565F</color>
+    <color name="md_pink_primaryContainer">#FFDEE4</color>
+    <color name="md_pink_onPrimaryContainer">#5E0022</color>
+    <color name="md_pink_secondary">#8E8E93</color>
     <color name="md_pink_onSecondary">#FFFFFF</color>
-    <color name="md_pink_secondaryContainer">#FFD9E3</color>
-    <color name="md_pink_onSecondaryContainer">#2B151C</color>
-    <color name="md_pink_tertiary">#7C5635</color>
+    <color name="md_pink_secondaryContainer">#F2F2F7</color>
+    <color name="md_pink_onSecondaryContainer">#3C3C43</color>
+    <color name="md_pink_tertiary">#FF9500</color>
     <color name="md_pink_onTertiary">#FFFFFF</color>
-    <color name="md_pink_tertiaryContainer">#FFDCC2</color>
-    <color name="md_pink_onTertiaryContainer">#2B1700</color>
+    <color name="md_pink_tertiaryContainer">#FFE9D1</color>
+    <color name="md_pink_onTertiaryContainer">#4A2C00</color>
+    <color name="md_pink_primary_dark">#FF375F</color>
+    <color name="md_pink_onPrimary_dark">#FFFFFF</color>
+    <color name="md_pink_primaryContainer_dark">#7A0030</color>
+    <color name="md_pink_onPrimaryContainer_dark">#FFDEE4</color>
+    <color name="md_pink_secondary_dark">#98989D</color>
+    <color name="md_pink_onSecondary_dark">#FFFFFF</color>
+    <color name="md_pink_secondaryContainer_dark">#2C2C2E</color>
+    <color name="md_pink_onSecondaryContainer_dark">#D1D1D6</color>
+    <color name="md_pink_tertiary_dark">#FF9F0A</color>
+    <color name="md_pink_onTertiary_dark">#FFFFFF</color>
+    <color name="md_pink_tertiaryContainer_dark">#4A2600</color>
+    <color name="md_pink_onTertiaryContainer_dark">#FFD9B3</color>
 
-    <!-- 主题色板：粉色（dark） -->
-    <color name="md_pink_primary_dark">#FFB0C8</color>
-    <color name="md_pink_onPrimary_dark">#5E1133</color>
-    <color name="md_pink_primaryContainer_dark">#AD1757</color>
-    <color name="md_pink_onPrimaryContainer_dark">#FFD9E3</color>
-    <color name="md_pink_secondary_dark">#E2BDC6</color>
-    <color name="md_pink_onSecondary_dark">#442A32</color>
-    <color name="md_pink_secondaryContainer_dark">#5D4048</color>
-    <color name="md_pink_onSecondaryContainer_dark">#FFD9E3</color>
-    <color name="md_pink_tertiary_dark">#EBBF93</color>
-    <color name="md_pink_onTertiary_dark">#452B0C</color>
-    <color name="md_pink_tertiaryContainer_dark">#61411F</color>
-    <color name="md_pink_onTertiaryContainer_dark">#FFDCC2</color>
+    <!-- 液态玻璃（iOS 毛玻璃质感：高透明白 + 细高光描边） -->
+    <color name="liquid_glass_surface">#E6FFFFFF</color>
+    <color name="liquid_glass_stroke">#59FFFFFF</color>
+    <color name="liquid_glass_surface_dark">#A61C1C1E</color>
+    <color name="liquid_glass_stroke_dark">#4DFFFFFF</color>
 
-    <!-- 液态玻璃 -->
-    <color name="liquid_glass_surface">#CCFFFFFF</color>
-    <color name="liquid_glass_stroke">#66FFFFFF</color>
-    <color name="liquid_glass_surface_dark">#CC121318</color>
-    <color name="liquid_glass_stroke_dark">#59FFFFFF</color>
+    <!-- iOS 组件色 -->
+    <color name="ios_blue_fill">#007AFF</color>
+    <color name="ios_blue_fill_dark">#0A84FF</color>
+    <color name="ios_blue_tint_light">#1A007AFF</color>
+    <color name="ios_blue_tint_dark">#290A84FF</color>
+    <color name="ios_blue_text_light">#007AFF</color>
+    <color name="ios_blue_text_dark">#0A84FF</color>
+    <color name="ios_segment_bg_light">#7676801F</color>
+    <color name="ios_segment_bg_dark">#76768033</color>
+    <color name="ios_segment_checked_light">#FFFFFF</color>
+    <color name="ios_segment_checked_dark">#636366</color>
+    <color name="ios_segment_text_light">#3C3C43</color>
+    <color name="ios_segment_text_dark">#F2F2F7</color>
+    <color name="ios_switch_green">#34C759</color>
+    <color name="ios_switch_green_dark">#30D158</color>
+    <color name="ios_switch_off_track">#E9E9EA</color>
+    <color name="ios_switch_off_track_dark">#39393D</color>
+    <color name="ios_switch_thumb_color">#FFFFFF</color>
 </resources>

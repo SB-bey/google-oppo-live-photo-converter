@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 浅色模式分段按钮文字：选中深色，未选中 iOS 灰 -->
+    <item android:state_checked="true" android:color="@color/ios_segment_text_light" />
+    <item android:color="@color/md_light_onSurfaceVariant" />
+</selector>

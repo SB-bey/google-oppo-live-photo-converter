@@ -4,15 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="24dp"
+    android:background="?android:attr/colorBackground">
 
     <TextView
         android:id="@+id/gpTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Google 相册导入"
-        android:textAppearance="?attr/textAppearanceHeadlineSmall"
-        android:textStyle="bold" />
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnBackground"
+        android:includeFontPadding="false" />
 
     <TextView
         android:id="@+id/gpStatus"
@@ -22,14 +28,17 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="准备中…"
-        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textSize="16sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:lineSpacingExtra="6dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/gpCancel"
-        style="@style/Widget.Material3.Button.TonalButton"
+        style="@style/iOSTintedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="返回" />
+        android:minHeight="48dp"
+        android:text="返回"
+        android:textSize="15sp" />
 
 </LinearLayout>

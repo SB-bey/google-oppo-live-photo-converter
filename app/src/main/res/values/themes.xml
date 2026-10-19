@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 公共基础：M3 浅色主题 + 沉浸式系统栏 -->
+    <!-- 公共基础：iOS 风格浅色主题 + 沉浸式系统栏 -->
     <style name="AppThemeBase" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -8,7 +8,7 @@
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <!-- 蓝色（默认） -->
+    <!-- iOS 蓝（默认） -->
     <style name="AppTheme" parent="AppThemeBase">
         <item name="colorPrimary">@color/md_light_primary</item>
         <item name="colorOnPrimary">@color/md_light_onPrimary</item>
@@ -20,6 +20,8 @@
         <item name="colorOnSecondaryContainer">@color/md_light_onSecondaryContainer</item>
         <item name="colorTertiary">@color/md_light_tertiary</item>
         <item name="colorOnTertiary">@color/md_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_light_onTertiaryContainer</item>
         <item name="colorError">@color/md_light_error</item>
         <item name="colorOnError">@color/md_light_onError</item>
         <item name="android:colorBackground">@color/md_light_background</item>
@@ -31,7 +33,7 @@
         <item name="colorOutlineVariant">@color/md_light_outlineVariant</item>
     </style>
 
-    <!-- 紫色 -->
+    <!-- iOS 紫 -->
     <style name="AppThemePurple" parent="AppThemeBase">
         <item name="colorPrimary">@color/md_purple_primary</item>
         <item name="colorOnPrimary">@color/md_purple_onPrimary</item>
@@ -47,7 +49,7 @@
         <item name="colorOnTertiaryContainer">@color/md_purple_onTertiaryContainer</item>
     </style>
 
-    <!-- 绿色 -->
+    <!-- iOS 绿 -->
     <style name="AppThemeGreen" parent="AppThemeBase">
         <item name="colorPrimary">@color/md_green_primary</item>
         <item name="colorOnPrimary">@color/md_green_onPrimary</item>
@@ -63,7 +65,7 @@
         <item name="colorOnTertiaryContainer">@color/md_green_onTertiaryContainer</item>
     </style>
 
-    <!-- 粉色 -->
+    <!-- iOS 粉 -->
     <style name="AppThemePink" parent="AppThemeBase">
         <item name="colorPrimary">@color/md_pink_primary</item>
         <item name="colorOnPrimary">@color/md_pink_onPrimary</item>
@@ -79,13 +81,6 @@
         <item name="colorOnTertiaryContainer">@color/md_pink_onTertiaryContainer</item>
     </style>
 
-    <!-- 跟随系统动态取色（Material You，Android 12+；低版本回退蓝色系） -->
-    <style name="AppThemeDynamic" parent="Theme.Material3.DynamicColors.DayNight">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
-    </style>
+    <!-- 跟随系统：iOS 语言下等同默认 iOS 蓝 -->
+    <style name="AppThemeDynamic" parent="AppTheme" />
 </resources>

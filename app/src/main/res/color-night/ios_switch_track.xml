@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 深色模式开关轨道：开启绿色，关闭深灰 -->
+    <item android:state_checked="true" android:color="@color/ios_switch_green_dark" />
+    <item android:color="@color/ios_switch_off_track_dark" />
+</selector>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 深色模式分段按钮背景：选中深灰底，未选中透明 -->
+    <item android:state_checked="true" android:color="@color/ios_segment_checked_dark" />
+    <item android:color="@android:color/transparent" />
+</selector>

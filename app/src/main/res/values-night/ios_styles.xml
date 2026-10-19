@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 深色模式下的 iOS 按钮（同名覆盖 values 版） -->
+
+    <style name="iOSFilledButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/ios_blue_fill_dark</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="iOSTintedButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/ios_blue_tint_dark</item>
+        <item name="android:textColor">@color/ios_blue_text_dark</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="iOSIconButton" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+        <item name="backgroundTint">@color/ios_icon_btn_bg</item>
+        <item name="iconTint">@color/ios_icon_btn_fg_dark</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+</resources>

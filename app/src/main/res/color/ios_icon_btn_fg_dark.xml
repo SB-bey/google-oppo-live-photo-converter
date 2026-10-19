@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 深色模式图标按钮前景 -->
+    <item android:color="@color/md_dark_onBackground" />
+</selector>

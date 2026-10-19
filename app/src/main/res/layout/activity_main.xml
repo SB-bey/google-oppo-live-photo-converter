@@ -11,9 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp">
 
-        <!-- 标题区 + 设置入口 -->
+        <!-- iOS 大标题导航区 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,15 +33,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
-                    android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                    android:textAppearance="?attr/textAppearanceHeadlineLarge"
+                    android:textSize="34sp"
                     android:textStyle="bold"
                     android:textColor="?attr/colorOnBackground"
-                    android:letterSpacing="-0.01" />
+                    android:letterSpacing="-0.01"
+                    android:includeFontPadding="false" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:text="@string/app_subtitle"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant" />
@@ -46,25 +51,25 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSettings"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                style="@style/iOSIconButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:insetLeft="0dp"
                 android:insetTop="0dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:padding="0dp"
                 app:icon="@drawable/ic_settings"
-                app:iconSize="24dp"
-                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal" />
+                app:iconSize="22dp" />
         </LinearLayout>
 
-        <!-- 输入卡片 -->
+        <!-- 输入卡片（iOS 分组卡片） -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            app:cardCornerRadius="28dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -72,46 +77,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="输入"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textStyle="bold" />
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
 
-                <!-- 模式切换 -->
+                <!-- iOS 分段控件（UISegmentedControl 风格） -->
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggleMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:background="@drawable/ios_segment_bg"
+                    android:padding="2dp"
                     app:checkedButton="@id/btnModeConvert"
                     app:selectionRequired="true"
                     app:singleSelection="true">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnModeConvert"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/iOSSegmentButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="动态图转换"
-                        android:textSize="13sp"
-                        app:icon="@drawable/ic_google"
-                        app:iconGravity="textStart" />
+                        android:textSize="13sp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnModeMerge"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/iOSSegmentButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="照片+视频"
-                        android:textSize="13sp"
-                        app:icon="@drawable/ic_combine"
-                        app:iconGravity="textStart" />
+                        android:textSize="13sp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
                 <!-- 模式 1：动态图转换 -->
@@ -124,42 +129,37 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="14dp"
                         android:text="把一张已有的动态图片转成 OPPO Live2（Google Motion Photo → OPPO）"
                         android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textSize="13sp"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPick"
+                        style="@style/iOSFilledButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:minHeight="52dp"
+                        android:minHeight="50dp"
                         android:text="选择动态图片"
-                        android:textSize="15sp"
-                        app:icon="@drawable/ic_pick"
-                        app:iconGravity="textStart"
-                        app:iconPadding="12dp"
-                        style="@style/Widget.Material3.Button.TonalButton" />
+                        android:textSize="16sp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnGoogle"
+                        style="@style/iOSTintedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:minHeight="48dp"
+                        android:minHeight="44dp"
                         android:text="用 Google 相册导入（可选云端照片）"
-                        android:textSize="14sp"
-                        app:icon="@drawable/ic_google"
-                        app:iconGravity="textStart"
-                        app:iconPadding="12dp"
-                        style="@style/Widget.Material3.Button.OutlinedButton" />
+                        android:textSize="14sp" />
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="14dp"
                         android:indeterminate="true"
                         android:visibility="gone"
                         app:indicatorColor="?attr/colorPrimary"
@@ -169,13 +169,13 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="14dp"
                         android:background="?attr/colorOutlineVariant" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="14dp"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
@@ -199,7 +199,9 @@
                                 android:layout_height="wrap_content"
                                 android:text="尚未选择文件"
                                 android:textAppearance="?attr/textAppearanceTitleSmall"
+                                android:textSize="15sp"
                                 android:textStyle="bold"
+                                android:textColor="?attr/colorOnSurface"
                                 android:ellipsize="middle"
                                 android:singleLine="true" />
 
@@ -208,8 +210,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="点击上方按钮，从相册或文件中选择"
+                                android:text="点击上方按钮，从相册或 Google 相册中选择"
                                 android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textSize="13sp"
                                 android:textColor="?attr/colorOnSurfaceVariant" />
                         </LinearLayout>
                     </LinearLayout>
@@ -226,53 +229,50 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="选择一张照片作为封面 + 一段视频，合成 OPPO Live2 实况图"
+                        android:layout_marginTop="14dp"
+                        android:text="选一张照片做封面 + 一段视频，合成 OPPO Live2 实况图"
                         android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textSize="13sp"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPickPhoto"
+                        style="@style/iOSTintedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:minHeight="50dp"
+                        android:minHeight="48dp"
                         android:text="选择照片封面"
-                        android:textSize="15sp"
-                        app:icon="@drawable/ic_pick"
-                        app:iconGravity="textStart"
-                        app:iconPadding="12dp"
-                        style="@style/Widget.Material3.Button.TonalButton" />
+                        android:textSize="15sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPickVideo"
+                        style="@style/iOSTintedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:minHeight="48dp"
+                        android:text="选择视频"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/photoInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="未选择照片"
+                        android:layout_marginTop="10dp"
+                        android:text="尚未选择照片封面"
                         android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textSize="13sp"
                         android:textColor="?attr/colorOnSurfaceVariant" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnPickVideo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:minHeight="50dp"
-                        android:text="选择视频"
-                        android:textSize="15sp"
-                        app:icon="@drawable/ic_video"
-                        app:iconGravity="textStart"
-                        app:iconPadding="12dp"
-                        style="@style/Widget.Material3.Button.TonalButton" />
 
                     <TextView
                         android:id="@+id/videoInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="未选择视频"
+                        android:layout_marginTop="4dp"
+                        android:text="尚未选择视频"
                         android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textSize="13sp"
                         android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </LinearLayout>
@@ -283,8 +283,8 @@
             android:id="@+id/cardConvert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="28dp"
+            android:layout_marginTop="12dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -292,86 +292,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="转换"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textStyle="bold" />
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="所有输入都汇成 OPPO Live2 实况图"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
-
-                <!-- 模式 1 转换按钮 -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnToOppo"
+                    style="@style/iOSFilledButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:minHeight="52dp"
+                    android:layout_marginTop="12dp"
+                    android:minHeight="50dp"
                     android:text="转为 OPPO Live2 实况图"
-                    android:textSize="15sp"
-                    app:icon="@drawable/ic_oppo"
-                    app:iconGravity="textStart"
-                    app:iconPadding="12dp"
-                    style="@style/Widget.Material3.Button" />
+                    android:textSize="16sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnToGoogle"
+                    style="@style/iOSTintedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:minHeight="52dp"
-                    android:text="转为 Google 动态图片"
-                    android:textSize="15sp"
-                    app:icon="@drawable/ic_google"
-                    app:iconGravity="textStart"
-                    app:iconPadding="12dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton" />
+                    android:layout_marginTop="8dp"
+                    android:minHeight="46dp"
+                    android:text="反向转为 Google 动态图"
+                    android:textSize="15sp" />
 
-                <!-- 模式 2 合成按钮 -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnMerge"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:minHeight="52dp"
-                    android:text="合成 OPPO Live2 实况图"
-                    android:textSize="15sp"
-                    android:visibility="gone"
-                    app:icon="@drawable/ic_combine"
-                    app:iconGravity="textStart"
-                    app:iconPadding="12dp"
-                    style="@style/Widget.Material3.Button" />
-
-                <LinearLayout
+                    style="@style/iOSFilledButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_swap"
-                        android:alpha="0.5" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="照片+视频 / Google 动态图 ⇄ OPPO"
-                        android:textAppearance="?attr/textAppearanceLabelSmall"
-                        android:textColor="?attr/colorOnSurfaceVariant" />
-                </LinearLayout>
+                    android:minHeight="50dp"
+                    android:text="合成 OPPO Live2 实况图"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -380,9 +341,8 @@
             android:id="@+id/cardResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            app:cardCornerRadius="28dp"
+            android:layout_marginTop="12dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -390,54 +350,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="结果"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textStyle="bold" />
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="结果"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorOnSurface" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnShare"
-                        android:layout_width="0dp"
+                        style="@style/iOSTintedButton"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:minHeight="48dp"
+                        android:minHeight="40dp"
                         android:text="分享"
-                        app:icon="@drawable/ic_share"
-                        app:iconGravity="textStart"
-                        style="@style/Widget.Material3.Button.OutlinedButton" />
+                        android:textSize="14sp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSave"
-                        android:layout_width="0dp"
+                        style="@style/iOSTintedButton"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="12dp"
-                        android:minHeight="48dp"
+                        android:layout_marginStart="8dp"
+                        android:minHeight="40dp"
                         android:text="保存到相册"
-                        app:icon="@drawable/ic_save"
-                        app:iconGravity="textStart"
-                        style="@style/Widget.Material3.Button.TonalButton" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/logView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="monospace"
-                    android:textSize="12sp"
-                    android:lineSpacingExtra="2dp"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
+                    android:lineSpacingExtra="4dp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="13sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

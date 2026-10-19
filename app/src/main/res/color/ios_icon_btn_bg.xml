@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- iOS 图标按钮背景：浅灰半透明 -->
+    <item android:color="#1A767680" />
+</selector>
