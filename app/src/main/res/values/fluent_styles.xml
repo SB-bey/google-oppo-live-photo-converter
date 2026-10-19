@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Fluent 主按钮：accent 填充、白字、4dp 圆角、无阴影 -->
+    <style name="FluentAccentButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/fluent_accent</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- Fluent 标准按钮：灰底、主文字色、细边框、4dp 圆角 -->
+    <style name="FluentStandardButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/fluent_btn_bg_light</item>
+        <item name="android:textColor">@color/fluent_text_primary_light</item>
+        <item name="strokeColor">@color/fluent_btn_border_light</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- Fluent 分段控件按钮（选中项白底深字） -->
+    <style name="FluentSegmentButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/fluent_segment_btn_bg</item>
+        <item name="android:textColor">@color/fluent_segment_btn_text</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:insetTop">3dp</item>
+        <item name="android:insetBottom">3dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- Fluent 图标按钮 -->
+    <style name="FluentIconButton" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+        <item name="backgroundTint">@color/fluent_icon_btn_bg</item>
+        <item name="iconTint">@color/fluent_icon_btn_fg</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+</resources>

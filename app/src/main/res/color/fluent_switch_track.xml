@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 浅色模式开关轨道：开启 accent，关闭浅灰 -->
+    <item android:state_checked="true" android:color="@color/fluent_switch_on" />
+    <item android:color="@color/fluent_switch_off_light" />
+</selector>

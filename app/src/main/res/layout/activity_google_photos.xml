@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Google 相册导入"
-        android:textSize="34sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="?attr/colorOnBackground"
         android:includeFontPadding="false" />
@@ -34,7 +34,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/gpCancel"
-        style="@style/iOSTintedButton"
+        style="@style/FluentStandardButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"

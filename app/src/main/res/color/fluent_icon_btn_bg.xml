@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- iOS 开关滑块：始终白色 -->
-    <item android:color="@color/ios_switch_thumb_color" />
+    <!-- 浅色模式图标按钮背景：淡灰 -->
+    <item android:color="@color/fluent_icon_btn_bg_light" />
 </selector>

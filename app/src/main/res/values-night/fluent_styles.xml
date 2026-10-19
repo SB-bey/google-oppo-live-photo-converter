@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 深色模式下的 Fluent 按钮（同名覆盖 values 版） -->
+
+    <style name="FluentAccentButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/fluent_accent_dark</item>
+        <item name="android:textColor">@color/fluent_text_primary_dark</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="FluentStandardButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/fluent_btn_bg_dark</item>
+        <item name="android:textColor">@color/fluent_text_primary_dark</item>
+        <item name="strokeColor">@color/fluent_btn_border_dark</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="FluentIconButton" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+        <item name="backgroundTint">@color/fluent_icon_btn_bg</item>
+        <item name="iconTint">@color/fluent_icon_btn_fg</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+</resources>

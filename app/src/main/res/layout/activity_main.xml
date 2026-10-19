@@ -16,7 +16,7 @@
         android:paddingTop="16dp"
         android:paddingBottom="32dp">
 
-        <!-- iOS 大标题导航区 -->
+        <!-- Fluent 标题导航区 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,10 +34,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
                     android:textAppearance="?attr/textAppearanceHeadlineLarge"
-                    android:textSize="34sp"
+                    android:textSize="28sp"
                     android:textStyle="bold"
                     android:textColor="?attr/colorOnBackground"
-                    android:letterSpacing="-0.01"
+                    android:letterSpacing="0"
                     android:includeFontPadding="false" />
 
                 <TextView
@@ -51,7 +51,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSettings"
-                style="@style/iOSIconButton"
+                style="@style/FluentIconButton"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 android:insetLeft="0dp"
@@ -63,13 +63,13 @@
                 app:iconSize="22dp" />
         </LinearLayout>
 
-        <!-- 输入卡片（iOS 分组卡片） -->
+        <!-- 输入卡片（Win11 面板：8dp 圆角） -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -88,13 +88,13 @@
                     android:textStyle="bold"
                     android:textColor="?attr/colorOnSurface" />
 
-                <!-- iOS 分段控件（UISegmentedControl 风格） -->
+                <!-- Fluent 分段控件（Win11 Segmented 风格） -->
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggleMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/ios_segment_bg"
+                    android:background="@drawable/fluent_segment_bg"
                     android:padding="2dp"
                     app:checkedButton="@id/btnModeConvert"
                     app:selectionRequired="true"
@@ -102,7 +102,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnModeConvert"
-                        style="@style/iOSSegmentButton"
+                        style="@style/FluentSegmentButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -111,7 +111,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnModeMerge"
-                        style="@style/iOSSegmentButton"
+                        style="@style/FluentSegmentButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -137,13 +137,13 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPick"
-                        style="@style/iOSFilledButton"
+                        style="@style/FluentAccentButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:minHeight="50dp"
                         android:text="导入"
-                        android:textSize="17sp" />
+                        android:textSize="16sp" />
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progress"
@@ -153,7 +153,7 @@
                         android:indeterminate="true"
                         android:visibility="gone"
                         app:indicatorColor="?attr/colorPrimary"
-                        app:trackCornerRadius="4dp"
+                        app:trackCornerRadius="2dp"
                         app:trackThickness="4dp" />
 
                     <View
@@ -200,7 +200,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="点击上方按钮，从相册或 Google 相册中选择"
+                                android:text="点击上方按钮导入动态图片"
                                 android:textAppearance="?attr/textAppearanceBodySmall"
                                 android:textSize="13sp"
                                 android:textColor="?attr/colorOnSurfaceVariant" />
@@ -227,7 +227,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPickPhoto"
-                        style="@style/iOSTintedButton"
+                        style="@style/FluentStandardButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -237,7 +237,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPickVideo"
-                        style="@style/iOSTintedButton"
+                        style="@style/FluentStandardButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -274,7 +274,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -295,7 +295,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnToOppo"
-                    style="@style/iOSFilledButton"
+                    style="@style/FluentAccentButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -305,7 +305,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnToGoogle"
-                    style="@style/iOSTintedButton"
+                    style="@style/FluentStandardButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -315,7 +315,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnMerge"
-                    style="@style/iOSFilledButton"
+                    style="@style/FluentAccentButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -332,7 +332,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -360,7 +360,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnShare"
-                        style="@style/iOSTintedButton"
+                        style="@style/FluentStandardButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="40dp"
@@ -369,7 +369,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSave"
-                        style="@style/iOSTintedButton"
+                        style="@style/FluentStandardButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
