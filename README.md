@@ -1,41 +1,67 @@
 # Google ↔ OPPO 实况图片转换器（Android）
 
-把 **照片 + 视频** 或 **Google 标准动态图片（Motion Photo）** 都变成 **OPPO 相册识别的 Live2 实况图片**，
-两条输入路线都汇聚到 OPPO Live2，也支持 OPPO Live2 反向转回 Google 动态图片。
+![Android](https://img.shields.io/badge/Android-8.0%2B-3DDC84)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.0-7F52FF)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Release](https://img.shields.io/github/v/release/SB-bey/google-oppo-live-photo-converter)
 
-格式逆向与字节布局基于 [Young-Spark/oppo-live-photo-maker](https://github.com/Young-Spark/oppo-live-photo-maker)（MIT 协议），
-已在 ColorOS 14+ 真机样本上验证过该字节布局。
+一个把 **Google 动态图片**、**照片 + 视频** 全部变成 **OPPO 相册可识别的 Live2 实况图片** 的安卓应用，
+同时支持 OPPO Live2 反向转回 Google 动态图片。素材既可以来自本地相册，也可以来自 **Google 相册（云端）**。
+
+格式逆向与字节布局参考 [Young-Spark/oppo-live-photo-maker](https://github.com/Young-Spark/oppo-live-photo-maker)（MIT 协议），
+已在 ColorOS 14+ 真机样本上验证。
+
+---
 
 ## 功能
 
-- **Material Design 3 现代界面**：圆角卡片布局、Android 12+ 动态取色（Material You）、自动明暗模式
-- **双输入模式**（主页切换）：
-  - **动态图转换**：Google Motion Photo → OPPO Live2（.live.jpg），也支持反向转 Google
-  - **照片 + 视频合成**（原仓库核心功能）：选一张封面照片 + 一段视频 → 合成 OPPO Live2 实况图
-- **三种素材导入方式**：
-  - **系统相册选择器（Photo Picker）**：Android 13+ 原生，有 GMS 设备自动聚合本地相册 + Google Photos 云端内容，零配置
-  - **Google 相册云端导入**：通过官方 Google Photos Picker API 直接从云端相册选素材（需自行配置凭据，见下方说明）
-  - 系统文件选择器（低版本自动回退）
-- **设置页**（主页右上角齿轮）：
-  - **液态玻璃效果**：半透明磨砂玻璃质感卡片
-  - **主题颜色**：跟随系统动态取色 / 蓝 / 紫 / 绿 / 粉
-  - **转换后自动保存到相册**（Pictures/LivePhotos）
-  - **HEVC 兼容性提示**开关
-  - **Google 相册凭据配置**（OAuth Client ID / Secret / API Key）
-- 内嵌视频 H.264 / HEVC 均可透传，转换结果可**分享**或**保存到相册**
+### 1. 双输入模式（主页顶部切换）
 
-### Google 相册（云端）导入配置
+| 模式 | 说明 |
+| --- | --- |
+| **动态图转换** | Google Motion Photo ↔ OPPO Live2 双向重封装 |
+| **照片 + 视频合成** | 选一张封面照片 + 一段视频 → 直接合成 OPPO Live2 实况图（原仓库核心功能） |
 
-云端导入使用官方 [Google Photos Picker API](https://developers.google.com/photos/picker/guides/get-started)，走 OAuth 2.0 PKCE 公共客户端流程，凭据只存在本机，不上传任何服务器：
+### 2. 三种素材导入方式
+
+- **系统照片选择器（Photo Picker）**：Android 13+ 原生，有 Google 服务的设备自动聚合本地相册 + Google Photos 云端内容，**零配置**
+- **Google 相册（云端）导入**：官方 Google Photos Picker API，直接从云端相册选素材（需一次性配置凭据，见下文）
+- **系统文件选择器**：Android 8~12 自动回退，也支持从云盘等文件服务导入
+
+### 3. 设置页（主页右上角齿轮）
+
+- **液态玻璃效果**：半透明磨砂玻璃质感卡片（浅色 / 深色自动适配）
+- **主题颜色**：跟随系统动态取色（Material You）/ 蓝色 / 紫色 / 绿色 / 粉色，即时生效
+- **转换后自动保存到相册**（Pictures/LivePhotos）
+- **HEVC 兼容性提示**开关
+- **Google 相册凭据配置**（OAuth Client ID / Secret / API Key）
+
+### 4. 格式能力
+
+- 自动识别 Google Motion Photo / OPPO Live2 / 普通 JPEG，格式标签实时显示
+- 内嵌视频 H.264 / HEVC 均可透传（HEVC 可选显示兼容性提醒）
+- 转换结果可**分享**或**保存到相册**
+
+---
+
+## Google 相册（云端）导入配置
+
+云端导入使用官方 [Google Photos Picker API](https://developers.google.com/photos/picker/guides/get-started)，走 **OAuth 2.0 PKCE 公共客户端**流程。
+凭据只保存在本机，应用没有后端服务器，照片不上传到任何第三方。
 
 1. 打开 [console.cloud.google.com](https://console.cloud.google.com)，新建项目
 2. 「APIs & Services → Library」搜索并启用 **Google Photos Picker API**
 3. 「APIs & Services → OAuth consent screen」填应用名，把自己的 Google 账号加为测试用户
-4. 「Credentials → Create credentials → OAuth client ID」，类型选 **Web application**，Authorized redirect URIs 填：`sbbeylivephoto://oauth2callback`
-5. 在 App 的「设置 → Google 相册接入」填入 Client ID（如换 token 报错再把 Client secret 填上）
-6. 回主页点「从 Google 相册导入」→ 浏览器登录授权 → 在 Google 相册选照片 → 自动回传
+4. 「Credentials → Create credentials → OAuth client ID」，类型选 **Web application**，Authorized redirect URIs 填：
+   ```
+   sbbeylivephoto://oauth2callback
+   ```
+5. 在 App 的「设置 → Google 相册接入」填入 Client ID（如换 token 报错，再把 Client secret 填上）
+6. 回主页点「从 Google 相册导入」→ 浏览器登录授权 → 在 Google 相册里选照片 → 自动下载原图（含 EXIF）回传
 
-> 说明：Picker API 为官方推荐、无需后端服务器；App 会下载所选素材的原图（含 EXIF）到本机缓存后进入转换流程。
+> 授权 / 选择 / 下载全程走官方接口；下载的素材缓存到应用私有目录，转换完成后可删除。
+
+---
 
 ## 工作原理
 
@@ -66,12 +92,30 @@ Google 动态图片（Pixel 系尾插式）= JPEG + 末尾追加 MP4 + XMP：
 
 核心代码：
 
-- `JpegUtil.kt` — JPEG 段扫描 / 剥离 / 插入
-- `XmpUtil.kt` — XMP 包构造与解析（GCamera / OpCamera / Container）
-- `ExifUtil.kt` — 最小 EXIF（UserComment）
-- `MpfUtil.kt` — MPF APP2 段构造与解析
-- `MotionPhotoParser.kt` — 格式识别与视频提取
-- `MotionPhotoConverter.kt` — 双向重封装
+| 文件 | 职责 |
+| --- | --- |
+| `JpegUtil.kt` | JPEG 段扫描 / 剥离 / 插入 |
+| `XmpUtil.kt` | XMP 包构造与解析（GCamera / OpCamera / Container） |
+| `ExifUtil.kt` | 最小 EXIF（UserComment） |
+| `MpfUtil.kt` | MPF APP2 段构造与解析 |
+| `MotionPhotoParser.kt` | 格式识别与视频提取 |
+| `MotionPhotoConverter.kt` | 双向重封装（Google ↔ OPPO） |
+| `GoogleAuth.kt` | OAuth 2.0 PKCE（授权 / 换 token / 刷新） |
+| `GooglePhotosClient.kt` | Google Photos Picker API 客户端（会话 / 列表 / 下载） |
+| `GooglePhotosActivity.kt` | 云端导入编排（授权 → 选择 → 下载 → 回传） |
+
+---
+
+## 版本记录
+
+| 版本 | 内容 |
+| --- | --- |
+| v1.0.0 | 首个可用版：Google ↔ OPPO 双向转换，全本地处理 |
+| v1.1.0 | Material Design 3 现代化界面：圆角卡片、动态取色、明暗模式 |
+| v1.2.0 | 补全逻辑：照片 + 视频 → OPPO Live2 合成模式；新增设置页（液态玻璃 / 主题色 / 自动保存 / HEVC 提示） |
+| v1.3.0 | Google 相册（云端）导入：Google Photos Picker API + OAuth PKCE；本地选择升级系统 Photo Picker |
+
+---
 
 ## 构建（命令行）
 
@@ -81,7 +125,7 @@ Google 动态图片（Pixel 系尾插式）= JPEG + 末尾追加 MP4 + XMP：
 export JAVA_HOME=/path/to/jdk-17
 export ANDROID_HOME=/path/to/android-sdk
 
-# 生成签名密钥（或直接用仓库里的 keystore，密码见 app/build.gradle 默认值）
+# 生成签名密钥（或直接用仓库里的 keystore，别名 motionphoto）
 keytool -genkeypair -v -keystore app/keystore/release.keystore -alias motionphoto \
   -keyalg RSA -keysize 2048 -validity 10000 -storepass motionphoto2026 -keypass motionphoto2026 \
   -dname "CN=YourName, OU=LivePhoto, O=YourOrg, L=City, ST=Province, C=CN"
@@ -94,13 +138,19 @@ keytool -genkeypair -v -keystore app/keystore/release.keystore -alias motionphot
 
 ```bash
 ./gradlew testDebugUnitTest
+# 16 个用例：格式识别 / 字节布局 / 双向往返 / 真实样本端到端 / PKCE / API JSON 解析
 ```
+
+---
 
 ## 兼容性
 
 - minSdk 26（Android 8.0+）
 - OPPO 实况识别：ColorOS 14+ 已确认；老固件可能不识别
 - HEVC 视频在部分旧机型相册可能无法播放动画（转换后仍可正常当图片打开）
+- Google 相册云端导入需要能访问 Google 服务（GMS / 网络可达）
+
+---
 
 ## 许可证
 
