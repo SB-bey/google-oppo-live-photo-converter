@@ -5,8 +5,8 @@
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Release](https://img.shields.io/github/v/release/SB-bey/google-oppo-live-photo-converter)
 
-一个把 **Google 动态图片**、**照片 + 视频** 全部变成 **OPPO 相册可识别的 Live2 实况图片** 的安卓应用，
-同时支持 OPPO Live2 反向转回 Google 动态图片。素材既可以来自本地相册，也可以来自 **Google 相册（云端）**。
+一个把 **任何厂商的动态图片**（iPhone Live Photo / Google / 三星 / 小米 / 华为等）以及 **照片 + 视频** 全部变成 **OPPO 相册可识别的 Live2 实况图片** 的安卓应用，
+同时支持 OPPO Live2 反向转回 Google 动态图片。素材一个「导入」按钮搞定：优先直接打开 **Google 相册**（可选云端照片），未安装自动回退系统相册。
 
 格式逆向与字节布局参考 [Young-Spark/oppo-live-photo-maker](https://github.com/Young-Spark/oppo-live-photo-maker)（MIT 协议），
 已在 ColorOS 14+ 真机样本上验证。
@@ -19,14 +19,16 @@
 
 | 模式 | 说明 |
 | --- | --- |
-| **动态图转换** | Google Motion Photo ↔ OPPO Live2 双向重封装 |
+| **动态图转换** | iPhone / Google / 三星 / 小米 / 华为等所有厂商动态图 → OPPO Live2（可反向 → Google 动态图） |
 | **照片 + 视频合成** | 选一张封面照片 + 一段视频 → 直接合成 OPPO Live2 实况图（原仓库核心功能） |
 
-### 2. 三种素材导入方式
+### 2. 一个「导入」按钮
 
-- **系统照片选择器（Photo Picker）**：Android 13+ 原生，有 Google 服务的设备自动聚合本地相册 + Google Photos 云端内容，**零配置**
-- **用 Google 相册导入**：直接打开 Google Photos 应用选图，云端备份的照片也能选，**无需任何配置**；未安装时自动回退系统相册
-- **系统文件选择器**：Android 8~12 自动回退，也支持从云盘等文件服务导入
+主页只有一个 **「导入」** 按钮，自动选择最佳来源：
+
+- **优先直接打开 Google Photos 应用**选图——云端备份的照片也能选，**无需任何配置**
+- **未安装 Google Photos 时**自动回退系统照片选择器（Android 13+ Photo Picker 同样聚合云端相册）
+- Android 8~12 自动回退系统文件选择器，也支持从云盘等文件服务导入
 
 ### 3. 设置页（主页右上角齿轮）
 
@@ -39,7 +41,9 @@
 
 ### 4. 格式能力
 
-- 自动识别 Google Motion Photo / OPPO Live2 / 普通 JPEG，格式标签实时显示
+- 自动识别 Google Motion Photo / 三星 Motion Photo / OPPO Live2 / 普通 JPEG，格式标签实时显示
+- **iPhone Live Photo 支持**：自动按同名 .MOV 配对视频（HEIC 主图自动转码 JPEG 封面）
+- 通用解析：Container Directory / MicroVideoOffset / SamsungCamera:MotionPhotoOffset / MPF / ftyp 扫描多级兜底
 - 内嵌视频 H.264 / HEVC 均可透传（HEVC 可选显示兼容性提醒）
 - 转换结果可**分享**或**保存到相册**
 
@@ -123,6 +127,7 @@ Google 动态图片（Pixel 系尾插式）= JPEG + 末尾追加 MP4 + XMP：
 | v1.3.0 | Google 相册（云端）导入：Google Photos Picker API + OAuth PKCE；本地选择升级系统 Photo Picker |
 | v1.4.0 | 「用 Google 相册导入」：直接拉起 Google Photos 应用选图（含云端照片），零配置；未安装自动回退系统相册 |
 | v1.5.0 | **iOS 设计语言（Apple HIG）**：iOS 色板、大标题导航、分组圆角卡片、分段控件、iOS 绿色开关，深浅色全适配 |
+| v2.0.0 | **通用动态图大版本**：单一「导入」按钮（优先 Google Photos、自动回退系统相册）；支持 iPhone / Google / 三星 / 小米 / 华为等所有厂商动态图 → OPPO Live2；iPhone Live Photo 同名 .MOV 自动配对 + HEIC 封面转码 |
 
 ---
 
@@ -157,7 +162,7 @@ keytool -genkeypair -v -keystore app/keystore/release.keystore -alias motionphot
 - minSdk 26（Android 8.0+）
 - OPPO 实况识别：ColorOS 14+ 已确认；老固件可能不识别
 - HEVC 视频在部分旧机型相册可能无法播放动画（转换后仍可正常当图片打开）
-- 「用 Google 相册导入」需要设备安装 Google Photos 应用（未安装会自动回退系统相册）
+- 「导入」优先需要设备安装 Google Photos 应用（未安装会自动回退系统相册）
 
 ---
 
